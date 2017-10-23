@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour {
         thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
 		aICharacterControl = GetComponent<AICharacterControl>();
 
-		cameraRaycaster.notifyMouseClickObservers += OnMouseClicked;
+		cameraRaycaster.NotifyMouseClickObservers += OnMouseClicked;
 	}
 
 	private void OnMouseClicked (RaycastHit raycastHit, int layerHit) {

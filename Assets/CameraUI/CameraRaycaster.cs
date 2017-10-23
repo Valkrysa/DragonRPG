@@ -8,15 +8,15 @@ public class CameraRaycaster : MonoBehaviour {
 	[SerializeField] int[] layerPriorities;
 	// [SerializeField] string stringToPrint = "";
 
-	float maxRaycastDepth = 100f; // Hard coded value
-	int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
+	private float maxRaycastDepth = 100f; // Hard coded value
+	private int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
 
 	// Setup delegates for broadcasting layer changes to other classes
 	public delegate void OnCursorLayerChange(int newLayer); // declare new delegate type
-	public event OnCursorLayerChange notifyLayerChangeObservers; // instantiate an observer set
+	public event OnCursorLayerChange NotifyLayerChangeObservers; // instantiate an observer set
 
 	public delegate void OnClickPriorityLayer(RaycastHit raycastHit, int layerHit); // declare new delegate type
-	public event OnClickPriorityLayer notifyMouseClickObservers; // instantiate an observer set
+	public event OnClickPriorityLayer NotifyMouseClickObservers; // instantiate an observer set
 
 
 	void Update() {
@@ -43,7 +43,7 @@ public class CameraRaycaster : MonoBehaviour {
 
 		// Notify delegates of highest priority game object under mouse when clicked
 		if (Input.GetMouseButton(0)) {
-			notifyMouseClickObservers(priorityHit.Value, layerHit);
+			NotifyMouseClickObservers(priorityHit.Value, layerHit);
 		}
 
 		// print(stringToPrint);
@@ -52,7 +52,7 @@ public class CameraRaycaster : MonoBehaviour {
 	void NotifyObserersIfLayerChanged(int newLayer) {
 		if (newLayer != topPriorityLayerLastFrame) {
 			topPriorityLayerLastFrame = newLayer;
-			notifyLayerChangeObservers(newLayer);
+			NotifyLayerChangeObservers(newLayer);
 		}
 	}
 
