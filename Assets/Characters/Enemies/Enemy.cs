@@ -2,93 +2,96 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
+using RPG.Projectiles;
+using RPG.Core;
 
-public class Enemy : MonoBehaviour, IDamageable {
+namespace RPG.Characters {
+	public class Enemy : MonoBehaviour, IDamageable {
 
-	[SerializeField] GameObject projectileToFire = null;
-	[SerializeField] GameObject projectileSocket = null;
-	[SerializeField] private float maxHealthPoints = 100;
-	[SerializeField] private float attackRadius = 4f;
-	[SerializeField] private float chaseRadius = 10f;
-	[SerializeField] private float damagePerShot = 9f;
-	[SerializeField] private float secondsBetweenShots = 0.5f;
-	[SerializeField] private Vector3 aimOffset = new Vector3(0f, 1f, 0f);
+		[SerializeField] GameObject projectileToFire = null;
+		[SerializeField] GameObject projectileSocket = null;
+		[SerializeField] private float maxHealthPoints = 100;
+		[SerializeField] private float attackRadius = 4f;
+		[SerializeField] private float chaseRadius = 10f;
+		[SerializeField] private float damagePerShot = 9f;
+		[SerializeField] private float secondsBetweenShots = 0.5f;
+		[SerializeField] private Vector3 aimOffset = new Vector3(0f, 1f, 0f);
 
-	private float currentHealthPoints = 100;
-	private AICharacterControl aICharacterControl = null;
-	private GameObject player = null;
-	private bool isAttacking = false;
-	private ChatReaction chatReaction = null;
-	
+		private float currentHealthPoints = 100;
+		private AICharacterControl aICharacterControl = null;
+		private GameObject player = null;
+		private bool isAttacking = false;
+		private ChatReaction chatReaction = null;
 
-	public float healthAsPercentage {
-		get {
-			return currentHealthPoints / (float)maxHealthPoints;
-		}
-	}
 
-	private void Start() {
-		currentHealthPoints = maxHealthPoints;
-
-		player = GameObject.FindGameObjectWithTag("Player");
-		aICharacterControl = GetComponent<AICharacterControl>();
-
-		chatReaction = GetComponent<ChatReaction>();
-	}
-
-	private void Update() {
-		float distanceToTarget = Vector3.Distance(player.transform.position, transform.position);
-
-		if (distanceToTarget <= attackRadius) {
-			aICharacterControl.SetTarget(transform);
-		} else if (distanceToTarget <= chaseRadius) {
-			aICharacterControl.SetTarget(player.transform);
-		} else if (distanceToTarget > chaseRadius) {
-			aICharacterControl.SetTarget(transform);
-		}
-
-		if (distanceToTarget <= attackRadius && !isAttacking) {
-			isAttacking = true;
-
-			InvokeRepeating("SpawnProjectile", 0f, secondsBetweenShots);
-
-			if (chatReaction) {
-				chatReaction.React();
+		public float healthAsPercentage {
+			get {
+				return currentHealthPoints / (float)maxHealthPoints;
 			}
 		}
-		if (distanceToTarget > attackRadius) {
-			isAttacking = false;
-			CancelInvoke();
+
+		private void Start() {
+			currentHealthPoints = maxHealthPoints;
+
+			player = GameObject.FindGameObjectWithTag("Player");
+			aICharacterControl = GetComponent<AICharacterControl>();
+
+			chatReaction = GetComponent<ChatReaction>();
 		}
-	}
 
-	private void OnDrawGizmos() {
-		// draw attack sphere
-		Gizmos.color = new Color(255f, 0f, 0f, .5f);
-		Gizmos.DrawWireSphere(transform.position, attackRadius);
+		private void Update() {
+			float distanceToTarget = Vector3.Distance(player.transform.position, transform.position);
 
-		// draw move sphere
-		Gizmos.color = Color.blue;
-		Gizmos.DrawWireSphere(transform.position, chaseRadius);
-	}
+			if (distanceToTarget <= attackRadius) {
+				aICharacterControl.SetTarget(transform);
+			} else if (distanceToTarget <= chaseRadius) {
+				aICharacterControl.SetTarget(player.transform);
+			} else if (distanceToTarget > chaseRadius) {
+				aICharacterControl.SetTarget(transform);
+			}
 
-	private void SpawnProjectile () {
-		GameObject projectileFired = Instantiate(projectileToFire, projectileSocket.transform.position, Quaternion.identity);
-		Projectile projectileComponent = projectileFired.GetComponent<Projectile>();
+			if (distanceToTarget <= attackRadius && !isAttacking) {
+				isAttacking = true;
 
-		Vector3 targetDirection = (player.transform.position + aimOffset - projectileFired.transform.position).normalized;
+				InvokeRepeating("FireProjectile", 0f, secondsBetweenShots);
 
-		projectileComponent.SetDamage(damagePerShot);
-		float projectileSpeed = projectileComponent.projectileSpeed;
+				if (chatReaction) {
+					chatReaction.React();
+				}
+			}
+			if (distanceToTarget > attackRadius) {
+				isAttacking = false;
+				CancelInvoke();
+			}
+		}
 
-		projectileFired.GetComponent<Rigidbody>().velocity = targetDirection * projectileSpeed;
-	}
+		private void OnDrawGizmos() {
+			// draw attack sphere
+			Gizmos.color = new Color(255f, 0f, 0f, .5f);
+			Gizmos.DrawWireSphere(transform.position, attackRadius);
 
-	public void TakeDamage(float damage) {
-		currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0, maxHealthPoints);
+			// draw move sphere
+			Gizmos.color = Color.blue;
+			Gizmos.DrawWireSphere(transform.position, chaseRadius);
+		}
 
-		if (currentHealthPoints <= 0) {
-			Destroy(gameObject);
+		private void FireProjectile() {
+			GameObject projectileFired = Instantiate(projectileToFire, projectileSocket.transform.position, Quaternion.identity);
+			Projectile projectileComponent = projectileFired.GetComponent<Projectile>();
+			projectileComponent.SetShooter(gameObject);
+			projectileComponent.SetDamage(damagePerShot);
+
+			Vector3 targetDirection = (player.transform.position + aimOffset - projectileFired.transform.position).normalized;
+			float projectileSpeed = projectileComponent.GetDefaultLaunchSpeed();
+			projectileFired.GetComponent<Rigidbody>().velocity = targetDirection * projectileSpeed;
+		}
+
+		public void TakeDamage(float damage) {
+			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0, maxHealthPoints);
+
+			if (currentHealthPoints <= 0) {
+				Destroy(gameObject);
+			}
 		}
 	}
 }

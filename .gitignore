@@ -7,7 +7,14 @@
 /Assets/_Scenes/Main/LightingData.asset
 /Assets/Levels/Main/LightingData.asset
 */LightingData.asset
-*/LightingData.asset*
+*/LightingData.asset.meta
+*/LightingData.asset.metadata
+LightingData.asset
+LightingData.asset.meta
+LightingData.asset.metadata
+*LightingData.asset
+*LightingData.asset.meta
+*LightingData.asset.metadata
 
 # Visual Studio 2015 cache directory
 /.vs/

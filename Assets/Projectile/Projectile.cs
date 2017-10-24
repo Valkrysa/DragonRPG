@@ -1,35 +1,50 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RPG.Core;
 
-public class Projectile : MonoBehaviour {
+namespace RPG.Projectiles {
+	public class Projectile : MonoBehaviour {
 
-	public float projectileSpeed = 1f;
-	private float damage;
+		[SerializeField] private float projectileSpeed = 1f;
+		[SerializeField] private GameObject shooter = null;
+		private float damage;
+		private const float DESTROY_DELAY = 0.01f;
 
-	// Use this for initialization
-	void Start () {
-		Invoke("SelfDestruct", 5f); // IF I DON'T COLLIDE IN 5 SECONDS I SELF DESTRUCT
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+		// Use this for initialization
+		void Start() {
 
-	private void SelfDestruct () {
-		Destroy(gameObject);
-	}
-
-	private void OnCollisionEnter(Collision collision) {
-		Component damageable = collision.gameObject.GetComponent(typeof(IDamageable));
-		if (damageable) {
-			(damageable as IDamageable).TakeDamage(damage);
-			Destroy(gameObject);
 		}
-	}
 
-	public void SetDamage (float newDamage) {
-		damage = newDamage;
+		// Update is called once per frame
+		void Update() {
+
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			if (shooter && collision.gameObject.layer != shooter.layer) {
+				DamageDamageable(collision);
+			}
+		}
+
+		private void DamageDamageable(Collision collision) {
+			Component damageable = collision.gameObject.GetComponent(typeof(IDamageable));
+			if (damageable) {
+				(damageable as IDamageable).TakeDamage(damage);
+			}
+			Destroy(gameObject, DESTROY_DELAY);
+		}
+
+		public void SetDamage(float newDamage) {
+			damage = newDamage;
+		}
+
+		public void SetShooter(GameObject newShooter) {
+			shooter = newShooter;
+		}
+
+		public float GetDefaultLaunchSpeed() {
+			return projectileSpeed;
+		}
 	}
 }
