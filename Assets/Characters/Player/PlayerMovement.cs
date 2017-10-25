@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Characters.ThirdPerson;
 using RPG.CameraUI;
 
@@ -22,8 +21,6 @@ namespace RPG.Characters {
 		private CameraRaycaster cameraRaycaster = null;
 		private AICharacterControl aICharacterControl = null;
 		public GameObject walkTarget;
-
-		private bool isInDirectMode = false;
 
 		private void Start() {
 			if (Camera.main != null) {
@@ -54,8 +51,8 @@ namespace RPG.Characters {
 
 		// TODO make this get called again for game pad support
 		private void ProcessDirectMovement() {
-			float h = CrossPlatformInputManager.GetAxis("Horizontal");
-			float v = CrossPlatformInputManager.GetAxis("Vertical");
+			float h = Input.GetAxis("Horizontal");
+			float v = Input.GetAxis("Vertical");
 
 			cameraForward = Vector3.Scale(myCamera.forward, new Vector3(1, 0, 1)).normalized;
 			movement = v * cameraForward + h * myCamera.right;

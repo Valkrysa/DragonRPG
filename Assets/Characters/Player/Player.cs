@@ -13,13 +13,14 @@ namespace RPG.Characters {
 		[SerializeField] const int enemyLayerNumber = 9; // despite being set as const, without removing serializefield
 		[SerializeField] private float maxHealthPoints = 100;
 		[SerializeField] private float damagePerHit = 25;
-		[SerializeField] private float minTimeBetweenHits = 0.5f;
-		[SerializeField] private float maxAttackRange = 2f;
+		
 		[SerializeField] private Weapons weaponInUse;
+		[SerializeField] private AnimatorOverrideController animatorOverrideController;
 
 		private float currentHealthPoints;
 		private CameraRaycaster cameraRaycaster;
 		private float lastHitTime = 0f;
+		private Animator animator;
 
 		public float healthAsPercentage {
 			get {
@@ -28,10 +29,22 @@ namespace RPG.Characters {
 		}
 
 		private void Start() {
-			currentHealthPoints = maxHealthPoints;
+			animator = GetComponent<Animator>();
+
+			SetCurrentMaxHealth();
 
 			PutWeaponInHand();
 			RegisterForMouseClick();
+			OverrideAnimatorController();
+		}
+
+		private void SetCurrentMaxHealth() {
+			currentHealthPoints = maxHealthPoints;
+		}
+
+		private void OverrideAnimatorController() {
+			animator.runtimeAnimatorController = animatorOverrideController;
+			animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip();
 		}
 
 		private void PutWeaponInHand() {
@@ -62,17 +75,27 @@ namespace RPG.Characters {
 		private void OnMouseClicked(RaycastHit raycastHit, int layerHit) {
 			if (layerHit == 9) {
 				GameObject enemy = raycastHit.collider.gameObject;
-
-				float distanceToEnemy = (enemy.transform.position - transform.position).magnitude;
-				if (distanceToEnemy > maxAttackRange) {
-					return; // quit early if the enemy is out of range
+				if (IsEnemyInRange(enemy)) {
+					ExecuteAttack(enemy);
 				}
+			}
+		}
 
-				Component damageable = enemy.GetComponent(typeof(IDamageable));
-				if (damageable && (Time.time - lastHitTime > minTimeBetweenHits)) {
-					(damageable as IDamageable).TakeDamage(damagePerHit);
-					lastHitTime = Time.time;
-				}
+		private bool IsEnemyInRange(GameObject enemy) {
+			float distanceToEnemy = (enemy.transform.position - transform.position).magnitude;
+			if (distanceToEnemy > weaponInUse.GetMaxAttackRange()) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		private void ExecuteAttack(GameObject enemy) {
+			Component damageable = enemy.GetComponent(typeof(IDamageable));
+			if (damageable && (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())) {
+				animator.SetTrigger("Attack");
+				(damageable as IDamageable).TakeDamage(damagePerHit);
+				lastHitTime = Time.time;
 			}
 		}
 
@@ -81,5 +104,3 @@ namespace RPG.Characters {
 		}
 	}
 }
-
-

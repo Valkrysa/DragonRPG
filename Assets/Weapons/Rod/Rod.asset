@@ -14,4 +14,4 @@ MonoBehaviour:
   grip: {fileID: 4160425503200010, guid: 5b7dc62e33295844fae4809c02232350, type: 2}
   weaponPrefab: {fileID: 1669640879735998, guid: cc604af666886b04fb39d8bd481208c3,
     type: 2}
-  attackAnimation: {fileID: 0}
+  attackAnimation: {fileID: 7400000, guid: fcd5d479f75a6b44595e56fa981bdda4, type: 3}
