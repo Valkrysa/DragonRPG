@@ -29,15 +29,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 89.439575, y: 12.217, z: -5.072754}
+  m_LocalRotation: {x: -0, y: -0.98282105, z: -0, w: -0.18456116}
+  m_LocalPosition: {x: 89.439575, y: 12.3, z: -7.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4840267580825724}
   - {fileID: 4302718575142498}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -201.271, z: 0}
 --- !u!54 &5426510
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -95,7 +95,7 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
-  m_Material: {fileID: 13400000, guid: 52baaeb214519f347a35cf0edfd262ff, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
@@ -714,9 +714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealthPoints: 1000
   damagePerHit: 50
-  minTimeBetweenHits: 1
-  maxAttackRange: 2
-  weaponInUse: {fileID: 11400000, guid: 6124954155777fb4fa88b8927338d467, type: 2}
+  weaponInUse: {fileID: 11400000, guid: c742991c040517e43b1bdce6b87c5700, type: 2}
   animatorOverrideController: {fileID: 22100000, guid: c66dedf8f1ad19d43823328c9e736bb8,
     type: 2}
 --- !u!114 &114303752260334210
