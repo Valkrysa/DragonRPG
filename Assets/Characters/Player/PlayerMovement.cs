@@ -10,9 +10,6 @@ namespace RPG.Characters {
 	[RequireComponent(typeof(ThirdPersonCharacter))]
 	public class PlayerMovement : MonoBehaviour {
 
-		[SerializeField] const int walkableLayerNumber = 8; // TODO find how to expose to the editor
-		[SerializeField] const int enemyLayerNumber = 9; // despite being set as const, without removing serializefield
-
 		private Transform myCamera;                  // A reference to the main camera in the scenes transform
 		private Vector3 cameraForward;             // The current forward direction of the camera
 		private Vector3 movement;
@@ -30,22 +27,20 @@ namespace RPG.Characters {
 			thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
 			aICharacterControl = GetComponent<AICharacterControl>();
 
-			cameraRaycaster.NotifyMouseClickObservers += OnMouseClicked;
+			cameraRaycaster.onMouseOverPossiblyWalkable += OnMouseOverPossiblyWalkable;
+			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
 		}
 
-		private void OnMouseClicked(RaycastHit raycastHit, int layerHit) {
-			switch (layerHit) {
-				case walkableLayerNumber:
-					walkTarget.transform.position = raycastHit.point;
-					aICharacterControl.target = walkTarget.transform;
-					break;
-				case enemyLayerNumber:
-					// aICharacterControl.target = raycastHit.transform;
-					GameObject enemy = raycastHit.collider.gameObject;
-					aICharacterControl.target = enemy.transform;
-					break;
-				default:
-					return;
+		private void OnMouseOverPossiblyWalkable(Vector3 destination) {
+			if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(1)) {
+				walkTarget.transform.position = destination;
+				aICharacterControl.SetTarget(walkTarget.transform);
+			}
+		}
+
+		private void OnMouseOverEnemy(Enemy enemy) {
+			if (Input.GetMouseButton(0)) {
+				aICharacterControl.SetTarget(enemy.transform);
 			}
 		}
 

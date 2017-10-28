@@ -9,8 +9,6 @@ using RPG.Core;
 namespace RPG.Characters {
 	public class Player : MonoBehaviour, IDamageable {
 
-		[SerializeField] const int walkableLayerNumber = 8; // TODO find how to expose to the editor
-		[SerializeField] const int enemyLayerNumber = 9; // despite being set as const, without removing serializefield
 		[SerializeField] private float maxHealthPoints = 100;
 		[SerializeField] private float damagePerHit = 25;
 		
@@ -69,15 +67,12 @@ namespace RPG.Characters {
 
 		private void RegisterForMouseClick() {
 			cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-			cameraRaycaster.NotifyMouseClickObservers += OnMouseClicked;
+			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
 		}
 
-		private void OnMouseClicked(RaycastHit raycastHit, int layerHit) {
-			if (layerHit == 9) {
-				GameObject enemy = raycastHit.collider.gameObject;
-				if (IsEnemyInRange(enemy)) {
-					ExecuteAttack(enemy);
-				}
+		private void OnMouseOverEnemy(Enemy enemy) {
+			if (Input.GetMouseButton(0) && IsEnemyInRange(enemy.gameObject)) {
+				ExecuteAttack(enemy);
 			}
 		}
 
@@ -90,7 +85,7 @@ namespace RPG.Characters {
 			}
 		}
 
-		private void ExecuteAttack(GameObject enemy) {
+		private void ExecuteAttack(Enemy enemy) {
 			Component damageable = enemy.GetComponent(typeof(IDamageable));
 			if (damageable && (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())) {
 				animator.SetTrigger("Attack");
