@@ -616,8 +616,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1254471470415560}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.9750671, y: 0, z: 19.703278}
+  m_LocalRotation: {x: -0, y: 0.73516685, z: -0, w: 0.6778863}
+  m_LocalPosition: {x: -4.83, y: 0, z: -44.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4888998911834500}
@@ -625,7 +625,7 @@ Transform:
   - {fileID: 4722065897013582}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -625.357, z: 0}
 --- !u!4 &4566478806996610
 Transform:
   m_ObjectHideFlags: 1
@@ -813,7 +813,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1218142334262790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.077, z: 0}
+  m_LocalPosition: {x: 0, y: 2.332, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4551954448546718}
@@ -970,7 +970,7 @@ MonoBehaviour:
     type: 2}
   projectileSocket: {fileID: 1463454860878880}
   maxHealthPoints: 5000
-  attackRadius: 5.38
+  attackRadius: 8
   chaseRadius: 1
   damagePerShot: -500
   secondsBetweenShots: 4
@@ -1030,8 +1030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5accb87177ba33b4c881069353bab736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reaction: 'Healer: To defeat the castle guards you must first get the Rod of Smiting
-    from the two who guard the tower over there.'
+  reaction: 'Healer: Wow... what a fighter you are!'
 --- !u!136 &136086235471256086
 CapsuleCollider:
   m_ObjectHideFlags: 1

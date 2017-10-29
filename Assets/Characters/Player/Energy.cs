@@ -6,39 +6,29 @@ using RPG.CameraUI;
 using RPG.Characters;
 
 public class Energy : MonoBehaviour {
-
-	[SerializeField] const int walkableLayerNumber = 8; // TODO find how to expose to the editor
-	[SerializeField] const int enemyLayerNumber = 9; // despite being set as const, without removing serializefield
+	
 	[SerializeField] private RawImage energyBar;
 	[SerializeField] private float maxEnergyPoints = 100f;
-	[SerializeField] private float pointsPerHit = 10f;
+	[SerializeField] private float regenPointsPerTick = 10f;
+	[SerializeField] private float regenTickRateInSeconds = 1f;
 
 	private float currentEnergyPoints = 0f;
-	private CameraRaycaster cameraRaycaster = null;
-
-	// Use this for initialization
+	
 	void Start () {
 		currentEnergyPoints = maxEnergyPoints;
-		cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-		cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
-	}
-	
-	// Update is called once per frame
-	void Update () {
 
+		InvokeRepeating("TickRegen", 0.1f, regenTickRateInSeconds);
 	}
 
-	private void OnMouseOverEnemy(Enemy enemy) {
-		if (Input.GetMouseButtonDown(1)) {
-			ExpendEnergy();
-		}
-	}
-
-	public void ExpendEnergy() {
-		float newEnergyUnbounded = currentEnergyPoints - pointsPerHit;
+	public void ExpendEnergy(float pointsOfEnergyToUse) {
+		float newEnergyUnbounded = currentEnergyPoints - pointsOfEnergyToUse;
 		currentEnergyPoints = Mathf.Clamp(newEnergyUnbounded, 0f, maxEnergyPoints);
 
 		UpdateEnergyBar();
+	}
+
+	public bool IsEnergyAvailable(float pointsOfEnergyToCheck) {
+		return pointsOfEnergyToCheck <= currentEnergyPoints;
 	}
 
 	private void UpdateEnergyBar() {
@@ -46,11 +36,13 @@ public class Energy : MonoBehaviour {
 		energyBar.uvRect = new Rect(xValue, 0f, 0.5f, 1f);
 	}
 
-	public float GetEnergy() {
-		return currentEnergyPoints;
-	}
-
 	private float EnergyAsPercentage() {
 		return (float)currentEnergyPoints / (float)maxEnergyPoints;
+	}
+
+	private void TickRegen() {
+		float newEnergyUnbounded = currentEnergyPoints + regenPointsPerTick;
+		currentEnergyPoints = Mathf.Clamp(newEnergyUnbounded, 0f, maxEnergyPoints);
+		UpdateEnergyBar();
 	}
 }

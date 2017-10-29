@@ -10,15 +10,17 @@ namespace RPG.Characters {
 	public class Player : MonoBehaviour, IDamageable {
 
 		[SerializeField] private float maxHealthPoints = 100;
-		[SerializeField] private float damagePerHit = 25;
-		
+		[SerializeField] private float baseDamage = 25;
 		[SerializeField] private Weapons weaponInUse;
 		[SerializeField] private AnimatorOverrideController animatorOverrideController;
+
+		[SerializeField] private SpecialAbility[] abilities;
 
 		private float currentHealthPoints;
 		private CameraRaycaster cameraRaycaster;
 		private float lastHitTime = 0f;
 		private Animator animator;
+		private Energy energy;
 
 		public float healthAsPercentage {
 			get {
@@ -28,12 +30,15 @@ namespace RPG.Characters {
 
 		private void Start() {
 			animator = GetComponent<Animator>();
+			energy = GetComponent<Energy>();
 
 			SetCurrentMaxHealth();
-
 			PutWeaponInHand();
 			RegisterForMouseClick();
 			OverrideAnimatorController();
+
+			abilities[0].AttachComponentTo(gameObject);
+			abilities[1].AttachComponentTo(gameObject);
 		}
 
 		private void SetCurrentMaxHealth() {
@@ -71,8 +76,14 @@ namespace RPG.Characters {
 		}
 
 		private void OnMouseOverEnemy(Enemy enemy) {
-			if (Input.GetMouseButton(0) && IsEnemyInRange(enemy.gameObject)) {
-				ExecuteAttack(enemy);
+			if (IsEnemyInRange(enemy.gameObject)) {
+				if (Input.GetMouseButton(0)) {
+					ExecuteAttack(enemy);
+				} else if (Input.GetMouseButtonDown(1)) {
+					AttemptSpecialAbility(0, enemy);
+				} else if (Input.GetKeyDown(KeyCode.Alpha1)) {
+					AttemptSpecialAbility(1, enemy);
+				}
 			}
 		}
 
@@ -89,8 +100,20 @@ namespace RPG.Characters {
 			Component damageable = enemy.GetComponent(typeof(IDamageable));
 			if (damageable && (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())) {
 				animator.SetTrigger("Attack");
-				(damageable as IDamageable).TakeDamage(damagePerHit);
+				(damageable as IDamageable).TakeDamage(baseDamage);
 				lastHitTime = Time.time;
+			}
+		}
+
+		private void AttemptSpecialAbility(int abilityIndex, Enemy enemy) {
+			float energyCost = abilities[abilityIndex].GetEnergyCost();
+
+			if (energy.IsEnergyAvailable(energyCost)) {
+				energy.ExpendEnergy(energyCost);
+
+				var abilityParams = new AbilityUseParams(enemy, baseDamage);
+
+				abilities[abilityIndex].Use(abilityParams);
 			}
 		}
 
