@@ -1,16 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using RPG.Core;
 using UnityEngine;
 
 namespace RPG.Characters {
-	public class PowerAttackBehavior : MonoBehaviour, ISpecialAbility {
+	public class SelfHealBehavior : MonoBehaviour, ISpecialAbility {
 
-		private PowerAttackConfig config;
+		private SelfHealConfig config;
+		private Player player;
 
 		// Use this for initialization
 		void Start() {
-
+			player = GetComponent<Player>();
 		}
 
 		// Update is called once per frame
@@ -18,18 +18,19 @@ namespace RPG.Characters {
 
 		}
 
-		public void SetConfig(PowerAttackConfig configToSet) {
+		public void SetConfig(SelfHealConfig configToSet) {
 			config = configToSet;
 		}
 
 		public void Use(AbilityUseParams abilityUseParams) {
-			DealDamage(abilityUseParams);
+			Heal(abilityUseParams);
 			PlayParticleEffect();
 		}
 
-		private void DealDamage(AbilityUseParams abilityUseParams) {
-			float damageToDeal = abilityUseParams.baseDamage + config.GetAbilityBonusDamage();
-			abilityUseParams.target.AdjustHealth(damageToDeal);
+		private void Heal(AbilityUseParams abilityUseParams) {
+			float amountToHeal = config.GetExtraHealth();
+			player.AdjustHealth(amountToHeal * -1);
+
 		}
 
 		private void PlayParticleEffect() {

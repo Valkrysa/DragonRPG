@@ -754,8 +754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01596b4c5dd6e54c9b905c288be5a42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyBar: {fileID: 114308495707182650, guid: 75a43cca039264395b99698681e52275,
-    type: 2}
+  energyBar: {fileID: 0}
   maxEnergyPoints: 100
   regenPointsPerTick: 4
   regenTickRateInSeconds: 1
@@ -823,8 +822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 1800
-  m_StationaryTurnSpeed: 900
+  m_MovingTurnSpeed: 1000
+  m_StationaryTurnSpeed: 800
   m_JumpPower: 6
   m_GravityMultiplier: 2
   m_RunCycleLegOffset: 0.2

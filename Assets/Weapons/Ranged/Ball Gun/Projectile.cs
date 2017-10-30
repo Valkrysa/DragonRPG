@@ -30,7 +30,7 @@ namespace RPG.Projectiles {
 		private void DamageDamageable(Collision collision) {
 			Component damageable = collision.gameObject.GetComponent(typeof(IDamageable));
 			if (damageable) {
-				(damageable as IDamageable).TakeDamage(damage);
+				(damageable as IDamageable).AdjustHealth(damage);
 			}
 			Destroy(gameObject, DESTROY_DELAY);
 		}

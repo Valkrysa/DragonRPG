@@ -93,7 +93,7 @@ namespace RPG.Characters {
 			projectileFired.GetComponent<Rigidbody>().velocity = targetDirection * projectileSpeed;
 		}
 
-		public void TakeDamage(float damage) {
+		public void AdjustHealth(float damage) {
 			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0, maxHealthPoints);
 
 			if (currentHealthPoints <= 0) {

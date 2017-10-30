@@ -562,12 +562,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1385353244979090}
-  m_LocalRotation: {x: 1.4480912e-29, y: -0.00000035762793, z: 5.58382e-15, w: 1}
-  m_LocalPosition: {x: 0.0000033110007, y: -0.00769954, z: 0.00059072167}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.000000021855696, y: -0.00000032782552, z: -1.7763566e-15,
+    w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 100.00006, y: 100, z: 100.00006}
   m_Children: []
-  m_Father: {fileID: 4693992216716296}
-  m_RootOrder: 0
+  m_Father: {fileID: 4722065897013582}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4377239142751102
 Transform:
@@ -616,8 +617,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1254471470415560}
-  m_LocalRotation: {x: -0, y: 0.73516685, z: -0, w: 0.6778863}
-  m_LocalPosition: {x: -4.83, y: 0, z: -44.62}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 52.2, y: 8.002197, z: 18.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4888998911834500}
@@ -640,7 +641,7 @@ Transform:
   - {fileID: 4453898324462894}
   - {fileID: 4102961098699712}
   m_Father: {fileID: 4693992216716296}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4597591801170394
 Transform:
@@ -720,7 +721,6 @@ Transform:
   m_LocalPosition: {x: -0.00033110008, y: 0.76995397, z: -0.059072137}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children:
-  - {fileID: 4304961608828242}
   - {fileID: 4566478806996610}
   m_Father: {fileID: 4722065897013582}
   m_RootOrder: 0
@@ -736,6 +736,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4693992216716296}
+  - {fileID: 4304961608828242}
   m_Father: {fileID: 4551954448546718}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -929,7 +930,7 @@ Animator:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1254471470415560}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 8d0a57b326030fc44ad6eeab6f398c6a, type: 3}
+  m_Avatar: {fileID: 9000000, guid: c8e7b38172649374e8e61210fe7c3283, type: 3}
   m_Controller: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -946,7 +947,7 @@ Animator:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1945236036200092}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: df66970bb136a93488cc9847e44efd27, type: 3}
+  m_Avatar: {fileID: 9000000, guid: c8e7b38172649374e8e61210fe7c3283, type: 3}
   m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -974,6 +975,7 @@ MonoBehaviour:
   chaseRadius: 1
   damagePerShot: -500
   secondsBetweenShots: 4
+  shotTimeVariation: 0.1
   aimOffset: {x: 0, y: 1, z: 0}
 --- !u!114 &114054860771182602
 MonoBehaviour:
@@ -1030,7 +1032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5accb87177ba33b4c881069353bab736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reaction: 'Healer: Wow... what a fighter you are!'
+  reaction: 'Farmer: Thanks for beating them! Come here and I''ll heal you.'
 --- !u!136 &136086235471256086
 CapsuleCollider:
   m_ObjectHideFlags: 1

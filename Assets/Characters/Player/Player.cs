@@ -51,6 +51,7 @@ namespace RPG.Characters {
 
 			abilities[0].AttachComponentTo(gameObject);
 			abilities[1].AttachComponentTo(gameObject);
+			abilities[2].AttachComponentTo(gameObject);
 		}
 
 		private void SetCurrentMaxHealth() {
@@ -95,6 +96,8 @@ namespace RPG.Characters {
 					AttemptSpecialAbility(0, enemy);
 				} else if (Input.GetKeyDown(KeyCode.Alpha1)) {
 					AttemptSpecialAbility(1, enemy);
+				} else if (Input.GetKeyDown(KeyCode.Alpha2)) {
+					AttemptSpecialAbility(2, enemy);
 				}
 			}
 		}
@@ -112,7 +115,7 @@ namespace RPG.Characters {
 			Component damageable = enemy.GetComponent(typeof(IDamageable));
 			if (damageable && (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())) {
 				animator.SetTrigger(ATTACK_TRIGGER);
-				(damageable as IDamageable).TakeDamage(baseDamage);
+				(damageable as IDamageable).AdjustHealth(baseDamage);
 				lastHitTime = Time.time;
 			}
 		}
@@ -129,7 +132,7 @@ namespace RPG.Characters {
 			}
 		}
 
-		public void TakeDamage(float damage) {
+		public void AdjustHealth(float damage) {
 			DamageHealth(damage);
 
 			bool isPlayerDieing = (currentHealthPoints <= 0);
