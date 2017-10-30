@@ -783,8 +783,9 @@ MonoBehaviour:
   maxHealthPoints: 70
   attackRadius: 2
   chaseRadius: 4
-  damagePerShot: 66
+  damagePerShot: 20
   secondsBetweenShots: 1
+  shotTimeVariation: 0.1
   aimOffset: {x: 0, y: 1, z: 0}
 --- !u!114 &114477129029920018
 MonoBehaviour:

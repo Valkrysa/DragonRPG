@@ -6,8 +6,8 @@ using RPG.CameraUI;
 using RPG.Characters;
 
 public class Energy : MonoBehaviour {
-	
-	[SerializeField] private RawImage energyBar;
+
+	[SerializeField] private Image energyBar;
 	[SerializeField] private float maxEnergyPoints = 100f;
 	[SerializeField] private float regenPointsPerTick = 10f;
 	[SerializeField] private float regenTickRateInSeconds = 1f;
@@ -32,8 +32,7 @@ public class Energy : MonoBehaviour {
 	}
 
 	private void UpdateEnergyBar() {
-		float xValue = -(EnergyAsPercentage() / 2f) - 0.5f;
-		energyBar.uvRect = new Rect(xValue, 0f, 0.5f, 1f);
+		energyBar.fillAmount = EnergyAsPercentage();
 	}
 
 	private float EnergyAsPercentage() {

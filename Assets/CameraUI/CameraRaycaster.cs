@@ -6,13 +6,12 @@ using RPG.Characters;
 namespace RPG.CameraUI {
 	public class CameraRaycaster : MonoBehaviour {
 		[SerializeField] const int clickToWalkLayer = 8;
-
 		[SerializeField] Texture2D walkCursor = null;
 		[SerializeField] Texture2D attackCursor = null;
 		[SerializeField] Vector2 cursorHotspot = new Vector2(0, 0);
 
 		private float maxRaycastDepth = 100f; // Hard coded value
-
+		
 		public delegate void OnMouseOverTerrain(Vector3 destination);
 		public event OnMouseOverTerrain onMouseOverPossiblyWalkable;
 
@@ -30,8 +29,12 @@ namespace RPG.CameraUI {
 
 		private void PerformRayCasts() {
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			if (RaycastForEnemy(ray)) { return; }
-			if (RaycastForWalkable(ray)) { return; }
+
+			if (RaycastForEnemy(ray)) {
+				return;
+			} else if (RaycastForWalkable(ray)) {
+				return;
+			}
 		}
 
 		private bool RaycastForWalkable(Ray ray) {

@@ -14,11 +14,12 @@ namespace RPG.Characters {
 		[SerializeField] private float chaseRadius = 10f;
 		[SerializeField] private float damagePerShot = 9f;
 		[SerializeField] private float secondsBetweenShots = 0.5f;
+		[SerializeField] private float shotTimeVariation = 0.1f;
 		[SerializeField] private Vector3 aimOffset = new Vector3(0f, 1f, 0f);
 
 		private float currentHealthPoints = 100;
 		private AICharacterControl aICharacterControl = null;
-		private GameObject player = null;
+		private Player player = null;
 		private bool isAttacking = false;
 		private ChatReaction chatReaction = null;
 
@@ -31,14 +32,19 @@ namespace RPG.Characters {
 
 		private void Start() {
 			currentHealthPoints = maxHealthPoints;
-
-			player = GameObject.FindGameObjectWithTag("Player");
+			
+			player = FindObjectOfType<Player>();
 			aICharacterControl = GetComponent<AICharacterControl>();
-
 			chatReaction = GetComponent<ChatReaction>();
 		}
 
 		private void Update() {
+			// stop taking "Enemy" actions if player dies.
+			if (player.healthAsPercentage <= Mathf.Epsilon) {
+				StopAllCoroutines();
+				Destroy(this);
+			}
+
 			float distanceToTarget = Vector3.Distance(player.transform.position, transform.position);
 
 			if (distanceToTarget <= attackRadius) {
@@ -52,7 +58,9 @@ namespace RPG.Characters {
 			if (distanceToTarget <= attackRadius && !isAttacking) {
 				isAttacking = true;
 
-				InvokeRepeating("FireProjectile", 0f, secondsBetweenShots);
+				float timeBetweenShots = Random.Range(secondsBetweenShots - shotTimeVariation, secondsBetweenShots + shotTimeVariation);
+
+				InvokeRepeating("FireProjectile", 0f, timeBetweenShots);
 
 				if (chatReaction) {
 					chatReaction.React();

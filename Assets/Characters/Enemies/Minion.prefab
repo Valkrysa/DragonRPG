@@ -839,8 +839,9 @@ MonoBehaviour:
   maxHealthPoints: 20
   attackRadius: 2
   chaseRadius: 8
-  damagePerShot: 33
+  damagePerShot: 20
   secondsBetweenShots: 0.5
+  shotTimeVariation: 0.1
   aimOffset: {x: 0, y: 1, z: 0}
 --- !u!136 &136520816771693452
 CapsuleCollider:

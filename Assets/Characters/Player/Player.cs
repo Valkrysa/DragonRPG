@@ -5,22 +5,29 @@ using UnityEngine.Assertions;
 using RPG.CameraUI;
 using RPG.Weapon;
 using RPG.Core;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace RPG.Characters {
 	public class Player : MonoBehaviour, IDamageable {
-
+		
 		[SerializeField] private float maxHealthPoints = 100;
 		[SerializeField] private float baseDamage = 25;
 		[SerializeField] private Weapons weaponInUse;
 		[SerializeField] private AnimatorOverrideController animatorOverrideController;
-
 		[SerializeField] private SpecialAbility[] abilities;
+		[SerializeField] private AudioClip[] damageSounds;
+		[SerializeField] private AudioClip[] deathSounds;
 
+		private AudioSource audioSource;
 		private float currentHealthPoints;
 		private CameraRaycaster cameraRaycaster;
 		private float lastHitTime = 0f;
 		private Animator animator;
 		private Energy energy;
+		private ChatBox chatBox = null;
+		private const string DEATH_TRIGGER = "Death";
+		private const string ATTACK_TRIGGER = "Attack";
 
 		public float healthAsPercentage {
 			get {
@@ -31,6 +38,11 @@ namespace RPG.Characters {
 		private void Start() {
 			animator = GetComponent<Animator>();
 			energy = GetComponent<Energy>();
+			audioSource = GetComponent<AudioSource>();
+
+			chatBox = FindObjectOfType<ChatBox>();
+			chatBox.AddChatEntry("You: I'm almost back to the village.");
+			chatBox.AddChatEntry("You: What is that fort doing up ahead?");
 
 			SetCurrentMaxHealth();
 			PutWeaponInHand();
@@ -99,7 +111,7 @@ namespace RPG.Characters {
 		private void ExecuteAttack(Enemy enemy) {
 			Component damageable = enemy.GetComponent(typeof(IDamageable));
 			if (damageable && (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())) {
-				animator.SetTrigger("Attack");
+				animator.SetTrigger(ATTACK_TRIGGER);
 				(damageable as IDamageable).TakeDamage(baseDamage);
 				lastHitTime = Time.time;
 			}
@@ -118,7 +130,41 @@ namespace RPG.Characters {
 		}
 
 		public void TakeDamage(float damage) {
+			DamageHealth(damage);
+
+			bool isPlayerDieing = (currentHealthPoints <= 0);
+			if (isPlayerDieing) {
+				StartCoroutine(KillPlayer());
+			}
+		}
+
+		private void DamageHealth(float damage) {
 			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0, maxHealthPoints);
+			PlayRandomDamageSound();
+		}
+
+		private IEnumerator KillPlayer() {
+			float deathLength = PlayRandomDeathSound();
+			chatBox.AddChatEntry("You: Arrrgh! ugh.... ....");
+			animator.SetTrigger(DEATH_TRIGGER);
+
+			yield return new WaitForSecondsRealtime(deathLength);
+
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		}
+
+		private void PlayRandomDamageSound() {
+			int randomIndex = Random.Range(0, damageSounds.Length);
+			audioSource.clip = damageSounds[randomIndex];
+			audioSource.Play();
+		}
+
+		private float PlayRandomDeathSound() {
+			int randomIndex = Random.Range(0, deathSounds.Length);
+			audioSource.clip = deathSounds[randomIndex];
+			audioSource.Play();
+
+			return deathSounds[randomIndex].length;
 		}
 	}
 }
