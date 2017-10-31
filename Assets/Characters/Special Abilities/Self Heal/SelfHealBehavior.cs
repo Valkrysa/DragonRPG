@@ -5,12 +5,14 @@ using UnityEngine;
 namespace RPG.Characters {
 	public class SelfHealBehavior : MonoBehaviour, ISpecialAbility {
 
-		private SelfHealConfig config;
-		private Player player;
+		private SelfHealConfig config = null;
+		private Player player = null ;
+		private AudioSource playerAudioSource = null;
 
 		// Use this for initialization
 		void Start() {
 			player = GetComponent<Player>();
+			playerAudioSource = player.GetComponent<AudioSource>();
 		}
 
 		// Update is called once per frame
@@ -25,16 +27,20 @@ namespace RPG.Characters {
 		public void Use(AbilityUseParams abilityUseParams) {
 			Heal(abilityUseParams);
 			PlayParticleEffect();
+
+			playerAudioSource.clip = config.GetAudioClip();
+			playerAudioSource.Play();
 		}
 
 		private void Heal(AbilityUseParams abilityUseParams) {
-			float amountToHeal = config.GetExtraHealth();
-			player.AdjustHealth(amountToHeal * -1);
+			player.Heal(config.GetExtraHealth());
 
 		}
 
 		private void PlayParticleEffect() {
-			GameObject particlePrefabToUse = Instantiate(config.GetParticlePrefab(), transform);
+			GameObject particlePrefab = config.GetParticlePrefab();
+			GameObject particlePrefabToUse = Instantiate(particlePrefab, transform.position, particlePrefab.transform.rotation);
+			particlePrefabToUse.transform.SetParent(transform);
 			ParticleSystem myParticleSystem = particlePrefabToUse.GetComponent<ParticleSystem>();
 			myParticleSystem.Play();
 			Destroy(particlePrefabToUse, myParticleSystem.main.duration);

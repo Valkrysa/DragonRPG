@@ -5,7 +5,7 @@ using UnityEngine;
 namespace RPG.Characters {
 
 	[CreateAssetMenu(menuName = "RPG/Special Ability/Area Effect")]
-	public class AreaEffectConfig : SpecialAbility {
+	public class AreaEffectConfig : AbilityConfig {
 
 		[Header("Power Attack Specific")]
 		[SerializeField] private float effectRadius = 5f;

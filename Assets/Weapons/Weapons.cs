@@ -12,6 +12,7 @@ namespace RPG.Weapon {
 		[SerializeField] private AnimationClip attackAnimation;
 		[SerializeField] private float minTimeBetweenHits = 0.5f;
 		[SerializeField] private float maxAttackRange = 2f;
+		[SerializeField] private float additionalDamage = 10f;
 
 		public GameObject GetWeaponPrefab() {
 			return weaponPrefab;
@@ -32,6 +33,10 @@ namespace RPG.Weapon {
 
 		public float GetMaxAttackRange() {
 			return maxAttackRange;
+		}
+
+		public float GetAdditionalDamage() {
+			return additionalDamage;
 		}
 	}
 }

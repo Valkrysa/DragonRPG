@@ -7,10 +7,13 @@ namespace RPG.Characters {
 	public class AreaEffectBehavior : MonoBehaviour, ISpecialAbility {
 
 		private AreaEffectConfig config;
+		private Player player = null;
+		private AudioSource playerAudioSource = null;
 
 		// Use this for initialization
 		void Start() {
-
+			player = GetComponent<Player>();
+			playerAudioSource = player.GetComponent<AudioSource>();
 		}
 
 		// Update is called once per frame
@@ -25,6 +28,9 @@ namespace RPG.Characters {
 		public void Use(AbilityUseParams abilityUseParams) {
 			DealRadialDamage(abilityUseParams);
 			PlayParticleEffect();
+
+			playerAudioSource.clip = config.GetAudioClip();
+			playerAudioSource.Play();
 		}
 
 		private void DealRadialDamage(AbilityUseParams abilityUseParams) {
@@ -38,14 +44,17 @@ namespace RPG.Characters {
 			);
 			foreach (var targetHit in targetsHit) {
 				IDamageable hitDamageable = targetHit.collider.gameObject.GetComponent<IDamageable>();
-				if (hitDamageable != null) {
-					hitDamageable.AdjustHealth(damageToDeal);
+				bool hitPlayer = targetHit.collider.gameObject.GetComponent<Player>();
+				if (!hitPlayer && hitDamageable != null) {
+					hitDamageable.TakeDamage(damageToDeal);
 				}
 			}
 		}
 
 		private void PlayParticleEffect() {
-			GameObject particlePrefabToUse = Instantiate(config.GetParticlePrefab(), transform);
+			GameObject particlePrefab = config.GetParticlePrefab();
+			GameObject particlePrefabToUse = Instantiate(particlePrefab, transform.position, particlePrefab.transform.rotation);
+
 			ParticleSystem myParticleSystem = particlePrefabToUse.GetComponent<ParticleSystem>();
 			myParticleSystem.Play();
 			Destroy(particlePrefabToUse, myParticleSystem.main.duration);

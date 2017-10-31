@@ -7,6 +7,7 @@ using RPG.Weapon;
 using RPG.Core;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 namespace RPG.Characters {
 	public class Player : MonoBehaviour, IDamageable {
@@ -15,17 +16,21 @@ namespace RPG.Characters {
 		[SerializeField] private float baseDamage = 25;
 		[SerializeField] private Weapons weaponInUse;
 		[SerializeField] private AnimatorOverrideController animatorOverrideController;
-		[SerializeField] private SpecialAbility[] abilities;
+		[SerializeField] private AbilityConfig[] _abilitiesConfig;
 		[SerializeField] private AudioClip[] damageSounds;
 		[SerializeField] private AudioClip[] deathSounds;
+		[SerializeField] [Range(0.1f, 1.0f)] private float criticalHitChancePercent = 0.1f;
+		[SerializeField] private float criticalHitMultiplier = 1.25f;
+		[SerializeField] private ParticleSystem criticalHitParticle;
 
-		private AudioSource audioSource;
-		private float currentHealthPoints;
-		private CameraRaycaster cameraRaycaster;
-		private float lastHitTime = 0f;
-		private Animator animator;
-		private Energy energy;
+		private Enemy currentEnemy = null;
+		private AudioSource audioSource = null;
+		private CameraRaycaster cameraRaycaster = null;
+		private Animator animator = null;
+		private Energy energy = null;
 		private ChatBox chatBox = null;
+		private float currentHealthPoints = 0f;
+		private float lastHitTime = 0f;
 		private const string DEATH_TRIGGER = "Death";
 		private const string ATTACK_TRIGGER = "Attack";
 
@@ -45,13 +50,31 @@ namespace RPG.Characters {
 			chatBox.AddChatEntry("You: What is that fort doing up ahead?");
 
 			SetCurrentMaxHealth();
+			AttachInitialAbilities();
 			PutWeaponInHand();
 			RegisterForMouseClick();
 			OverrideAnimatorController();
 
-			abilities[0].AttachComponentTo(gameObject);
-			abilities[1].AttachComponentTo(gameObject);
-			abilities[2].AttachComponentTo(gameObject);
+		}
+
+		private void Update() {
+			if (healthAsPercentage > Mathf.Epsilon) {
+				ScanForAbilityKeyDown();
+			}
+		}
+
+		private void AttachInitialAbilities() {
+			for (int abilityIndex = 0; abilityIndex < _abilitiesConfig.Length; abilityIndex++) {
+				_abilitiesConfig[abilityIndex].AttachComponentTo(gameObject);
+			}
+		}
+
+		private void ScanForAbilityKeyDown() {
+			for (int keyIndex = 0; keyIndex < _abilitiesConfig.Length; keyIndex++) {
+				if (Input.GetKeyDown(keyIndex.ToString())) {
+					AttemptSpecialAbility(keyIndex);
+				}
+			}
 		}
 
 		private void SetCurrentMaxHealth() {
@@ -89,20 +112,19 @@ namespace RPG.Characters {
 		}
 
 		private void OnMouseOverEnemy(Enemy enemy) {
-			if (IsEnemyInRange(enemy.gameObject)) {
+			this.currentEnemy = enemy;
+
+			if (IsEnemyInRange()) {
 				if (Input.GetMouseButton(0)) {
-					ExecuteAttack(enemy);
+					ExecuteAttack();
 				} else if (Input.GetMouseButtonDown(1)) {
-					AttemptSpecialAbility(0, enemy);
-				} else if (Input.GetKeyDown(KeyCode.Alpha1)) {
-					AttemptSpecialAbility(1, enemy);
-				} else if (Input.GetKeyDown(KeyCode.Alpha2)) {
-					AttemptSpecialAbility(2, enemy);
+					AttemptSpecialAbility(0);
 				}
 			}
 		}
 
-		private bool IsEnemyInRange(GameObject enemy) {
+		private bool IsEnemyInRange() {
+			GameObject enemy = currentEnemy.gameObject;
 			float distanceToEnemy = (enemy.transform.position - transform.position).magnitude;
 			if (distanceToEnemy > weaponInUse.GetMaxAttackRange()) {
 				return false;
@@ -111,39 +133,51 @@ namespace RPG.Characters {
 			}
 		}
 
-		private void ExecuteAttack(Enemy enemy) {
-			Component damageable = enemy.GetComponent(typeof(IDamageable));
+		private void ExecuteAttack() {
+			Component damageable = currentEnemy.GetComponent(typeof(IDamageable));
 			if (damageable && (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())) {
 				animator.SetTrigger(ATTACK_TRIGGER);
-				(damageable as IDamageable).AdjustHealth(baseDamage);
+				(damageable as IDamageable).TakeDamage(CalculateDamage());
 				lastHitTime = Time.time;
 			}
 		}
 
-		private void AttemptSpecialAbility(int abilityIndex, Enemy enemy) {
-			float energyCost = abilities[abilityIndex].GetEnergyCost();
+		private float CalculateDamage() {
+			float damageToDeal = baseDamage + weaponInUse.GetAdditionalDamage();
+
+			float criticalRoll = UnityEngine.Random.Range(0f, 1f);
+			bool isCriticalHit = criticalRoll <= criticalHitChancePercent;
+			if (isCriticalHit) {
+				damageToDeal = damageToDeal * criticalHitMultiplier;
+				criticalHitParticle.Play();
+			}
+
+			return damageToDeal;
+		}
+
+		private void AttemptSpecialAbility(int abilityIndex) {
+			float energyCost = _abilitiesConfig[abilityIndex].GetEnergyCost();
 
 			if (energy.IsEnergyAvailable(energyCost)) {
 				energy.ExpendEnergy(energyCost);
 
-				var abilityParams = new AbilityUseParams(enemy, baseDamage);
+				var abilityParams = new AbilityUseParams(currentEnemy, baseDamage);
 
-				abilities[abilityIndex].Use(abilityParams);
+				_abilitiesConfig[abilityIndex].Use(abilityParams);
 			}
 		}
 
-		public void AdjustHealth(float damage) {
-			DamageHealth(damage);
-
-			bool isPlayerDieing = (currentHealthPoints <= 0);
-			if (isPlayerDieing) {
+		public void TakeDamage(float damage) {
+			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0, maxHealthPoints);
+			PlayRandomDamageSound();
+			
+			if (currentHealthPoints <= 0) {
 				StartCoroutine(KillPlayer());
 			}
 		}
 
-		private void DamageHealth(float damage) {
-			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0, maxHealthPoints);
-			PlayRandomDamageSound();
+		public void Heal(float healingAmount) {
+			currentHealthPoints = Mathf.Clamp(currentHealthPoints + healingAmount, 0, maxHealthPoints);
 		}
 
 		private IEnumerator KillPlayer() {
@@ -157,13 +191,13 @@ namespace RPG.Characters {
 		}
 
 		private void PlayRandomDamageSound() {
-			int randomIndex = Random.Range(0, damageSounds.Length);
+			int randomIndex = UnityEngine.Random.Range(0, damageSounds.Length);
 			audioSource.clip = damageSounds[randomIndex];
 			audioSource.Play();
 		}
 
 		private float PlayRandomDeathSound() {
-			int randomIndex = Random.Range(0, deathSounds.Length);
+			int randomIndex = UnityEngine.Random.Range(0, deathSounds.Length);
 			audioSource.clip = deathSounds[randomIndex];
 			audioSource.Play();
 
