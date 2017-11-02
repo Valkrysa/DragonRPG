@@ -4,46 +4,17 @@ using RPG.Core;
 using UnityEngine;
 
 namespace RPG.Characters {
-	public class PowerAttackBehavior : MonoBehaviour, ISpecialAbility {
+	public class PowerAttackBehavior : AbilityBehavior {
 
-		private PowerAttackConfig config;
-		private Player player = null;
-		private AudioSource playerAudioSource = null;
-
-		// Use this for initialization
-		void Start() {
-			player = GetComponent<Player>();
-			playerAudioSource = player.GetComponent<AudioSource>();
-		}
-
-		// Update is called once per frame
-		void Update() {
-
-		}
-
-		public void SetConfig(PowerAttackConfig configToSet) {
-			config = configToSet;
-		}
-
-		public void Use(AbilityUseParams abilityUseParams) {
+		public override void Use(AbilityUseParams abilityUseParams) {
 			DealDamage(abilityUseParams);
 			PlayParticleEffect();
-
-			playerAudioSource.clip = config.GetAudioClip();
-			playerAudioSource.Play();
+			PlayAbilitySound();
 		}
 
 		private void DealDamage(AbilityUseParams abilityUseParams) {
-			float damageToDeal = abilityUseParams.baseDamage + config.GetAbilityBonusDamage();
+			float damageToDeal = abilityUseParams.baseDamage + (config as PowerAttackConfig).GetAbilityBonusDamage();
 			abilityUseParams.target.TakeDamage(damageToDeal);
-		}
-
-		private void PlayParticleEffect() {
-			GameObject particlePrefabToUse = Instantiate(config.GetParticlePrefab(), transform.position, Quaternion.identity);
-
-			ParticleSystem myParticleSystem = particlePrefabToUse.GetComponent<ParticleSystem>();
-			myParticleSystem.Play();
-			Destroy(particlePrefabToUse, myParticleSystem.main.duration);
 		}
 	}
 }

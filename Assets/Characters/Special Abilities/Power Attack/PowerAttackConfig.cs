@@ -10,11 +10,8 @@ namespace RPG.Characters {
 		[Header("Power Attack Specific")]
 		[SerializeField] private float abilityBonusDamage = 10f;
 
-		public override void AttachComponentTo(GameObject gameObjectToAttachTo) {
-			var behaviorComponent = gameObjectToAttachTo.AddComponent<PowerAttackBehavior>();
-			behaviorComponent.SetConfig(this);
-
-			behavior = behaviorComponent;
+		public override AbilityBehavior GetBehaviorComponent(GameObject gameObjectToAttachTo) {
+			return gameObjectToAttachTo.AddComponent<PowerAttackBehavior>();
 		}
 
 		public float GetAbilityBonusDamage() {

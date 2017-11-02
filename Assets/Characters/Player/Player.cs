@@ -63,9 +63,13 @@ namespace RPG.Characters {
 			}
 		}
 
+		public void PutWeaponInHand(Weapons weaponConfig) {
+			Debug.Log("putting " + weaponConfig.name + " in player hand");
+		}
+
 		private void AttachInitialAbilities() {
 			for (int abilityIndex = 0; abilityIndex < _abilitiesConfig.Length; abilityIndex++) {
-				_abilitiesConfig[abilityIndex].AttachComponentTo(gameObject);
+				_abilitiesConfig[abilityIndex].AttachAbilityTo(gameObject);
 			}
 		}
 

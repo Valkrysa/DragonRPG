@@ -7,15 +7,12 @@ namespace RPG.Characters {
 	[CreateAssetMenu(menuName = "RPG/Special Ability/Area Effect")]
 	public class AreaEffectConfig : AbilityConfig {
 
-		[Header("Power Attack Specific")]
+		[Header("Area Effect Specific")]
 		[SerializeField] private float effectRadius = 5f;
 		[SerializeField] private float damageToEachTarget = 15f;
 
-		public override void AttachComponentTo(GameObject gameObjectToAttachTo) {
-			var behaviorComponent = gameObjectToAttachTo.AddComponent<AreaEffectBehavior>();
-			behaviorComponent.SetConfig(this);
-
-			behavior = behaviorComponent;
+		public override AbilityBehavior GetBehaviorComponent(GameObject gameObjectToAttachTo) {
+			return gameObjectToAttachTo.AddComponent<AreaEffectBehavior>();
 		}
 
 		public float GetEffectRadius() {
