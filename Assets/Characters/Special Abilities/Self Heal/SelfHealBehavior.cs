@@ -4,17 +4,15 @@ using UnityEngine;
 
 namespace RPG.Characters {
 	public class SelfHealBehavior : AbilityBehavior {
-
-		public override void Use(AbilityUseParams abilityUseParams) {
-			Heal(abilityUseParams);
+		public override void Use(GameObject target) {
+			Heal(target);
 			PlayParticleEffect();
 			PlayAbilitySound();
 		}
 
-		private void Heal(AbilityUseParams abilityUseParams) {
-			Player player = GetComponent<Player>();
-			player.Heal((config as SelfHealConfig).GetExtraHealth());
-
+		private void Heal(GameObject target) {
+			HealthSystem health = GetComponent<HealthSystem>();
+			health.Heal((config as SelfHealConfig).GetExtraHealth());
 		}
 	}
 }

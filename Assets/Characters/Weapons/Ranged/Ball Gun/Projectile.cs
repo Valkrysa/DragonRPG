@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Core;
 
-namespace RPG.Projectiles {
+namespace RPG.Characters {
 	public class Projectile : MonoBehaviour {
 
 		[SerializeField] private float projectileSpeed = 1f;
@@ -28,11 +28,11 @@ namespace RPG.Projectiles {
 		}
 
 		private void DamageDamageable(Collision collision) {
-			Component damageable = collision.gameObject.GetComponent(typeof(IDamageable));
-			if (damageable) {
-				(damageable as IDamageable).TakeDamage(damage);
-			}
-			Destroy(gameObject, DESTROY_DELAY);
+			//Component damageable = collision.gameObject.GetComponent(typeof(IDamageable));
+			//if (damageable) {
+			//	(damageable as IDamageable).TakeDamage(damage);
+			//}
+			//Destroy(gameObject, DESTROY_DELAY);
 		}
 
 		public void SetDamage(float newDamage) {

@@ -139,16 +139,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4752869571324042}
-  - component: {fileID: 95003540896768718}
-  - component: {fileID: 54701129508309976}
-  - component: {fileID: 136040182951773416}
-  - component: {fileID: 114631104722293728}
   - component: {fileID: 114384582725941478}
   - component: {fileID: 114539447905053128}
   - component: {fileID: 195207336173914666}
-  - component: {fileID: 114930477233897298}
   - component: {fileID: 114053132175185322}
   - component: {fileID: 82210557615935132}
+  - component: {fileID: 114260232572810650}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -662,21 +658,6 @@ Transform:
   m_Father: {fileID: 4030131144220322}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &54701129508309976
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1337287940806458}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 1
 --- !u!82 &82210557615935132
 AudioSource:
   m_ObjectHideFlags: 1
@@ -757,23 +738,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!95 &95003540896768718
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1337287940806458}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 8d0a57b326030fc44ad6eeab6f398c6a, type: 3}
-  m_Controller: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114053132175185322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -785,10 +749,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01596b4c5dd6e54c9b905c288be5a42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _abilitiesConfig:
+  - {fileID: 11400000, guid: ece7552b4d0a04c4db9c41b6df27b35f, type: 2}
+  - {fileID: 11400000, guid: 41e02a7f71f1d24449b5798ce4147f6a, type: 2}
+  - {fileID: 11400000, guid: 5ed6a762e4a7c564480dc9a6f8b62c37, type: 2}
+  outOfEnergy: {fileID: 8300000, guid: 126543257762fac49a2921382b23ce74, type: 3}
   energyBar: {fileID: 0}
   maxEnergyPoints: 100
   regenPointsPerTick: 4
   regenTickRateInSeconds: 1
+--- !u!114 &114260232572810650
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1337287940806458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e956d414d944a41827c5922bf03c7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageSounds: []
+  deathSounds: []
+  healthBar: {fileID: 0}
+  maxHealthPoints: 100
+  deathVanishSeconds: 2
 --- !u!114 &114384582725941478
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -800,7 +785,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0876e27027fef4880e8a6f9a5384b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkTarget: {fileID: 1759323352427812, guid: 381b1d5c0c76dbd41bb81dd310131ff4, type: 2}
+  colliderCenter: {x: 0, y: 1, z: 0}
+  colliderRadius: 0.2
+  colliderHeight: 2.03
+  animatorController: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9, type: 2}
+  animatorOverrideController: {fileID: 22100000, guid: c66dedf8f1ad19d43823328c9e736bb8,
+    type: 2}
+  avatar: {fileID: 9000000, guid: 8d0a57b326030fc44ad6eeab6f398c6a, type: 3}
+  stoppingDistance: 1
+  moveSpeedMultiplier: 1.5
+  animationSpeedMultiplier: 1.5
+  moveThreshold: 1
+  movingTurnSpeed: 360
+  stationaryTurnSpeed: 180
 --- !u!114 &114539447905053128
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -812,26 +809,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67c11c94fb1e444c93b66c9e818f09c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoints: 200
   baseDamage: 10
-  weaponInUse: {fileID: 11400000, guid: c742991c040517e43b1bdce6b87c5700, type: 2}
+  currentWeaponConfig: {fileID: 11400000, guid: c742991c040517e43b1bdce6b87c5700,
+    type: 2}
   animatorOverrideController: {fileID: 22100000, guid: c66dedf8f1ad19d43823328c9e736bb8,
     type: 2}
-  _abilitiesConfig:
-  - {fileID: 11400000, guid: ece7552b4d0a04c4db9c41b6df27b35f, type: 2}
-  - {fileID: 11400000, guid: 41e02a7f71f1d24449b5798ce4147f6a, type: 2}
-  - {fileID: 11400000, guid: 5ed6a762e4a7c564480dc9a6f8b62c37, type: 2}
-  damageSounds:
-  - {fileID: 8300000, guid: 512d9a48e0979f24cb41006c7953ddac, type: 3}
-  - {fileID: 8300000, guid: 23fe4eada54b9ce46aed8be668f4c8ba, type: 3}
-  - {fileID: 8300000, guid: a914db1cfa3e8cd4b80e00363d5616ac, type: 3}
-  - {fileID: 8300000, guid: 80f336f5cdd5a364cbf572c805e364e4, type: 3}
-  - {fileID: 8300000, guid: 6bf0d538180ba0e4590d8c8285a6a285, type: 3}
-  - {fileID: 8300000, guid: d2bbeeb985e637143b6d0e617759b9f1, type: 3}
-  deathSounds:
-  - {fileID: 8300000, guid: d39e219d3b4c34d408ff82434fefcbf1, type: 3}
-  - {fileID: 8300000, guid: 2675da37420ef4c498cd83ff01b0be6c, type: 3}
-  - {fileID: 8300000, guid: d18546ba22dacb342b324c4d9f15cc96, type: 3}
   criticalHitChancePercent: 0.1
   criticalHitMultiplier: 1.25
   criticalHitParticle: {fileID: 198966304364708140}
@@ -846,50 +828,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ba9eba4563e30418d4fd8078ae83f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114631104722293728
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1337287940806458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 1000
-  m_StationaryTurnSpeed: 800
-  m_JumpPower: 6
-  m_GravityMultiplier: 2
-  m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 0.7
-  m_AnimSpeedMultiplier: 1.5
-  m_GroundCheckDistance: 0.5
---- !u!114 &114930477233897298
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1337287940806458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
---- !u!136 &136040182951773416
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1337287940806458}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 2.03
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!137 &137194520857840516
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

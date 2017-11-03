@@ -279,10 +279,8 @@ GameObject:
   - component: {fileID: 95133241188901958}
   - component: {fileID: 54972462987442134}
   - component: {fileID: 136462364699180540}
-  - component: {fileID: 114724945970611726}
   - component: {fileID: 114084196143070286}
   - component: {fileID: 195642942657863048}
-  - component: {fileID: 114477129029920018}
   - component: {fileID: 114889307044969644}
   m_Layer: 9
   m_Name: Bruiser
@@ -498,8 +496,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1699523728504772}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 90.31564, y: 11.994141, z: -30.84}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.52, y: 0, z: -7.028}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4420400642020820}
@@ -787,18 +785,6 @@ MonoBehaviour:
   secondsBetweenShots: 1
   shotTimeVariation: 0.1
   aimOffset: {x: 0, y: 1, z: 0}
---- !u!114 &114477129029920018
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1699523728504772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!114 &114647639608968258
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -812,25 +798,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyCanvasPrefab: {fileID: 1311539807392560, guid: 9a9d70d10b9331d469e57254147e0430,
     type: 2}
---- !u!114 &114724945970611726
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1699523728504772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 1800
-  m_StationaryTurnSpeed: 900
-  m_JumpPower: 6
-  m_GravityMultiplier: 2
-  m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 1
-  m_AnimSpeedMultiplier: 1
-  m_GroundCheckDistance: 1
 --- !u!114 &114889307044969644
 MonoBehaviour:
   m_ObjectHideFlags: 1

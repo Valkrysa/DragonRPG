@@ -677,10 +677,8 @@ GameObject:
   - component: {fileID: 95989907953483134}
   - component: {fileID: 54049616243359746}
   - component: {fileID: 136988794083614202}
-  - component: {fileID: 114340448560534260}
   - component: {fileID: 114440956929803504}
   - component: {fileID: 195663147926973090}
-  - component: {fileID: 114793993084591010}
   - component: {fileID: 114504298357977122}
   m_Layer: 9
   m_Name: Soldier
@@ -2017,25 +2015,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114340448560534260
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1736924047921078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 1800
-  m_StationaryTurnSpeed: 900
-  m_JumpPower: 6
-  m_GravityMultiplier: 2
-  m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 1
-  m_AnimSpeedMultiplier: 1
-  m_GroundCheckDistance: 1
 --- !u!114 &114440956929803504
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2080,18 +2059,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ba9eba4563e30418d4fd8078ae83f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114793993084591010
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1736924047921078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!114 &114958850865803282
 MonoBehaviour:
   m_ObjectHideFlags: 1

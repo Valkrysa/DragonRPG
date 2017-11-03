@@ -249,11 +249,11 @@ GameObject:
   - component: {fileID: 95767556723997884}
   - component: {fileID: 54735432175394714}
   - component: {fileID: 136192049521789704}
-  - component: {fileID: 114856611939179982}
   - component: {fileID: 114813971515074300}
   - component: {fileID: 195624842217008176}
-  - component: {fileID: 114448868538853752}
   - component: {fileID: 114092768733118860}
+  - component: {fileID: 114884384718159862}
+  - component: {fileID: 82348509892470320}
   m_Layer: 9
   m_Name: Archer
   m_TagString: Untagged
@@ -738,8 +738,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1711481730661758}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.63559, y: 0, z: -62.760235}
+  m_LocalRotation: {x: -0, y: -0.9820256, z: -0, w: 0.1887479}
+  m_LocalPosition: {x: 8.42, y: 0, z: 41.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4617392287851814}
@@ -747,7 +747,7 @@ Transform:
   - {fileID: 4458958475272244}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -158.24101, z: 0}
 --- !u!23 &23577557062041994
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -802,6 +802,86 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!82 &82348509892470320
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1711481730661758}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95767556723997884
 Animator:
   serializedVersion: 3
@@ -860,19 +940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5accb87177ba33b4c881069353bab736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reaction: 'Archer: Wear them down!'
---- !u!114 &114448868538853752
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1711481730661758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  reaction: 'Archer: Knight + Archer, together at last.'
 --- !u!114 &114813971515074300
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -887,14 +955,13 @@ MonoBehaviour:
   projectileToFire: {fileID: 1358740389457442, guid: ddffb77a14c473140907b5759f5d5696,
     type: 2}
   projectileSocket: {fileID: 1468024132295564}
-  maxHealthPoints: 70
   attackRadius: 10
   chaseRadius: 2
   damagePerShot: 20
   secondsBetweenShots: 1.5
   shotTimeVariation: 0.1
   aimOffset: {x: 0, y: 1, z: 0}
---- !u!114 &114856611939179982
+--- !u!114 &114884384718159862
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -902,17 +969,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1711481730661758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
+  m_Script: {fileID: 11500000, guid: d2e956d414d944a41827c5922bf03c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 1800
-  m_StationaryTurnSpeed: 900
-  m_JumpPower: 6
-  m_GravityMultiplier: 2
-  m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 1
-  m_AnimSpeedMultiplier: 1
-  m_GroundCheckDistance: 1
+  damageSounds: []
+  deathSounds: []
+  healthBar: {fileID: 0}
+  maxHealthPoints: 100
+  deathVanishSeconds: 2
 --- !u!136 &136192049521789704
 CapsuleCollider:
   m_ObjectHideFlags: 1

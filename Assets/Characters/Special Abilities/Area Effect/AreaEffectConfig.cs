@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace RPG.Characters {
-
 	[CreateAssetMenu(menuName = "RPG/Special Ability/Area Effect")]
 	public class AreaEffectConfig : AbilityConfig {
 

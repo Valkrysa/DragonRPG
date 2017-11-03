@@ -725,10 +725,8 @@ GameObject:
   - component: {fileID: 95513062784898036}
   - component: {fileID: 54832589256012230}
   - component: {fileID: 136168322528631228}
-  - component: {fileID: 114016388676923098}
   - component: {fileID: 114285081317858506}
   - component: {fileID: 195060511316495094}
-  - component: {fileID: 114579707322755730}
   - component: {fileID: 114745314158943754}
   m_Layer: 9
   m_Name: Knight
@@ -2017,25 +2015,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114016388676923098
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1786478002895408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 1800
-  m_StationaryTurnSpeed: 900
-  m_JumpPower: 6
-  m_GravityMultiplier: 2
-  m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 1
-  m_AnimSpeedMultiplier: 1
-  m_GroundCheckDistance: 1
 --- !u!114 &114285081317858506
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2057,18 +2036,6 @@ MonoBehaviour:
   secondsBetweenShots: 2
   shotTimeVariation: 0.1
   aimOffset: {x: 0, y: 1, z: 0}
---- !u!114 &114579707322755730
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1786478002895408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!114 &114676146087680928
 MonoBehaviour:
   m_ObjectHideFlags: 1

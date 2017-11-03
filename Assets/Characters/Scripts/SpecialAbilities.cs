@@ -5,17 +5,23 @@ using UnityEngine.UI;
 using RPG.CameraUI;
 using RPG.Characters;
 
-public class Energy : MonoBehaviour {
-
+public class SpecialAbilities : MonoBehaviour {
+	[SerializeField] private AbilityConfig[] _abilitiesConfig;
+	[SerializeField] private AudioClip outOfEnergy;
 	[SerializeField] private Image energyBar;
 	[SerializeField] private float maxEnergyPoints = 100f;
 	[SerializeField] private float regenPointsPerTick = 10f;
 	[SerializeField] private float regenTickRateInSeconds = 1f;
 
+	private AudioSource audioSource;
 	private float currentEnergyPoints = 0f;
 	
 	void Start () {
+		audioSource = GetComponent<AudioSource>();
+
 		currentEnergyPoints = maxEnergyPoints;
+
+		AttachInitialAbilities();
 
 		InvokeRepeating("TickRegen", 0.1f, regenTickRateInSeconds);
 	}
@@ -27,8 +33,20 @@ public class Energy : MonoBehaviour {
 		UpdateEnergyBar();
 	}
 
-	public bool IsEnergyAvailable(float pointsOfEnergyToCheck) {
-		return pointsOfEnergyToCheck <= currentEnergyPoints;
+	public int GetNumberOfAbilities() {
+		return _abilitiesConfig.Length;
+	}
+
+	public void AttemptSpecialAbility(int abilityIndex, GameObject target = null) {
+		float energyCost = _abilitiesConfig[abilityIndex].GetEnergyCost();
+
+		if (energyCost <= currentEnergyPoints) {
+			ExpendEnergy(energyCost);
+			
+			_abilitiesConfig[abilityIndex].Use(target);
+		} else {
+			audioSource.PlayOneShot(outOfEnergy);
+		}
 	}
 
 	private void UpdateEnergyBar() {
@@ -43,5 +61,11 @@ public class Energy : MonoBehaviour {
 		float newEnergyUnbounded = currentEnergyPoints + regenPointsPerTick;
 		currentEnergyPoints = Mathf.Clamp(newEnergyUnbounded, 0f, maxEnergyPoints);
 		UpdateEnergyBar();
+	}
+
+	private void AttachInitialAbilities() {
+		for (int abilityIndex = 0; abilityIndex < _abilitiesConfig.Length; abilityIndex++) {
+			_abilitiesConfig[abilityIndex].AttachAbilityTo(gameObject);
+		}
 	}
 }

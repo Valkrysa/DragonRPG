@@ -1,58 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using RPG.Projectiles;
 using RPG.Core;
 
 namespace RPG.Characters {
-	public class Enemy : MonoBehaviour, IDamageable {
-
+	public class Enemy : MonoBehaviour {
 		[SerializeField] GameObject projectileToFire = null;
 		[SerializeField] GameObject projectileSocket = null;
-		[SerializeField] private float maxHealthPoints = 100;
 		[SerializeField] private float attackRadius = 4f;
 		[SerializeField] private float chaseRadius = 10f;
 		[SerializeField] private float damagePerShot = 9f;
 		[SerializeField] private float secondsBetweenShots = 0.5f;
 		[SerializeField] private float shotTimeVariation = 0.1f;
 		[SerializeField] private Vector3 aimOffset = new Vector3(0f, 1f, 0f);
-
-		private float currentHealthPoints = 100;
-		private AICharacterControl aICharacterControl = null;
+		
 		private Player player = null;
 		private bool isAttacking = false;
 		private ChatReaction chatReaction = null;
 
-
-		public float healthAsPercentage {
-			get {
-				return currentHealthPoints / (float)maxHealthPoints;
-			}
+		public void TakeDamage(float amount) {
+			// REMOVE THIS METHOD
 		}
 
 		private void Start() {
-			currentHealthPoints = maxHealthPoints;
-			
 			player = FindObjectOfType<Player>();
-			aICharacterControl = GetComponent<AICharacterControl>();
 			chatReaction = GetComponent<ChatReaction>();
 		}
 
 		private void Update() {
-			// stop taking "Enemy" actions if player dies.
-			if (player.healthAsPercentage <= Mathf.Epsilon) {
-				StopAllCoroutines();
-				Destroy(this);
-			}
-
 			float distanceToTarget = Vector3.Distance(player.transform.position, transform.position);
 
 			if (distanceToTarget <= attackRadius) {
-				aICharacterControl.SetTarget(transform);
+				//aICharacterControl.SetTarget(transform);
 			} else if (distanceToTarget <= chaseRadius) {
-				aICharacterControl.SetTarget(player.transform);
+				//aICharacterControl.SetTarget(player.transform);
 			} else if (distanceToTarget > chaseRadius) {
-				aICharacterControl.SetTarget(transform);
+				//aICharacterControl.SetTarget(transform);
 			}
 
 			if (distanceToTarget <= attackRadius && !isAttacking) {
@@ -91,14 +74,6 @@ namespace RPG.Characters {
 			Vector3 targetDirection = (player.transform.position + aimOffset - projectileFired.transform.position).normalized;
 			float projectileSpeed = projectileComponent.GetDefaultLaunchSpeed();
 			projectileFired.GetComponent<Rigidbody>().velocity = targetDirection * projectileSpeed;
-		}
-
-		public void TakeDamage(float damage) {
-			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0, maxHealthPoints);
-
-			if (currentHealthPoints <= 0) {
-				Destroy(gameObject);
-			}
 		}
 	}
 }

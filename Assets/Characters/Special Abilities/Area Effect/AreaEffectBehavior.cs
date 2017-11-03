@@ -5,15 +5,14 @@ using UnityEngine;
 
 namespace RPG.Characters {
 	public class AreaEffectBehavior : AbilityBehavior {
-
-		public override void Use(AbilityUseParams abilityUseParams) {
-			DealRadialDamage(abilityUseParams);
+		public override void Use(GameObject target) {
+			DealRadialDamage(target);
 			PlayParticleEffect();
 			PlayAbilitySound();
 		}
 
-		private void DealRadialDamage(AbilityUseParams abilityUseParams) {
-			float damageToDeal = abilityUseParams.baseDamage + (config as AreaEffectConfig).GetDamageToEachTarget();
+		private void DealRadialDamage(GameObject target) {
+			float damageToDeal = (config as AreaEffectConfig).GetDamageToEachTarget();
 
 			RaycastHit[] targetsHit = Physics.SphereCastAll(
 				transform.position,
@@ -22,7 +21,7 @@ namespace RPG.Characters {
 				(config as AreaEffectConfig).GetEffectRadius()
 			);
 			foreach (var targetHit in targetsHit) {
-				IDamageable hitDamageable = targetHit.collider.gameObject.GetComponent<IDamageable>();
+				HealthSystem hitDamageable = targetHit.collider.gameObject.GetComponent<HealthSystem>();
 				bool hitPlayer = targetHit.collider.gameObject.GetComponent<Player>();
 				if (!hitPlayer && hitDamageable != null) {
 					hitDamageable.TakeDamage(damageToDeal);

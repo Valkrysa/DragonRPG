@@ -84,10 +84,8 @@ GameObject:
   - component: {fileID: 95334538990323762}
   - component: {fileID: 54524354294007198}
   - component: {fileID: 136520816771693452}
-  - component: {fileID: 114887898770826804}
   - component: {fileID: 114965813497853184}
   - component: {fileID: 195154202244209714}
-  - component: {fileID: 114014474098609960}
   - component: {fileID: 114834818552064814}
   m_Layer: 9
   m_Name: Minion
@@ -500,8 +498,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1208030382635014}
-  m_LocalRotation: {x: -0, y: 0.99926573, z: -0, w: 0.038315576}
-  m_LocalPosition: {x: 86.70415, y: 11.994141, z: -45.599068}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 11.981903, y: 0, z: -106.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4399129045329614}
@@ -766,18 +764,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114014474098609960
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1208030382635014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!114 &114135871025611258
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -802,26 +788,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5accb87177ba33b4c881069353bab736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reaction: 'Minion: Get em!'
---- !u!114 &114887898770826804
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1208030382635014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 1800
-  m_StationaryTurnSpeed: 900
-  m_JumpPower: 6
-  m_GravityMultiplier: 2
-  m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 1
-  m_AnimSpeedMultiplier: 1
-  m_GroundCheckDistance: 1
+  reaction: 'Minion: Everyone get in here!'
 --- !u!114 &114965813497853184
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -838,7 +805,7 @@ MonoBehaviour:
   projectileSocket: {fileID: 1551837338022084}
   maxHealthPoints: 20
   attackRadius: 2
-  chaseRadius: 8
+  chaseRadius: 18
   damagePerShot: 20
   secondsBetweenShots: 0.5
   shotTimeVariation: 0.1
