@@ -78,9 +78,9 @@ namespace RPG.Characters {
 			_character.Kill();
 			animator.SetTrigger(DEATH_TRIGGER);
 
-			// if we are dealing with a player
-			Player playerComponent = GetComponent<Player>();
-			if (playerComponent && playerComponent.isActiveAndEnabled) {
+			// if we are dealing with a _playerControl
+			PlayerControl playerControlComponent = GetComponent<PlayerControl>();
+			if (playerControlComponent && playerControlComponent.isActiveAndEnabled) {
 				float deathLength = PlayRandomDeathSound();
 				yield return new WaitForSecondsRealtime(deathLength);
 

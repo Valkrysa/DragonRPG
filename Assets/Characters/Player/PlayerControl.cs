@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using System;
 
 namespace RPG.Characters {
-	public class Player : MonoBehaviour {
+	public class PlayerControl : MonoBehaviour {
 		[SerializeField] private float baseDamage = 25;
 		[SerializeField] private Weapons currentWeaponConfig;
 		[SerializeField] private AnimatorOverrideController animatorOverrideController;
@@ -16,6 +16,7 @@ namespace RPG.Characters {
 		[SerializeField] private float criticalHitMultiplier = 1.25f;
 		[SerializeField] private ParticleSystem criticalHitParticle;
 
+		private Character character;
 		private SpecialAbilities abilities;
 		private GameObject weaponObject;
 		private Enemy currentEnemy;
@@ -28,6 +29,7 @@ namespace RPG.Characters {
 		private const string DEFAULT_ATTACK = "DEFAULT ATTACK";
 		
 		private void Start() {
+			character = GetComponent<Character>();
 			animator = GetComponent<Animator>();
 			abilities = GetComponent<SpecialAbilities>();
 			health = GetComponent<HealthSystem>();
@@ -37,15 +39,13 @@ namespace RPG.Characters {
 			chatBox.AddChatEntry("You: What is that fort doing up ahead?");
 			
 			PutWeaponInHand(currentWeaponConfig);
-			RegisterForMouseClick();
+			RegisterForMouseEvent();
 			SetAttackAnimation();
 
 		}
 
 		private void Update() {
-			if (health.HealthAsPercentage() > Mathf.Epsilon) {
-				ScanForAbilityKeyDown();
-			}
+			ScanForAbilityKeyDown();
 		}
 
 		public void PutWeaponInHand(Weapons weaponConfig) {
@@ -60,7 +60,17 @@ namespace RPG.Characters {
 			weaponObject.transform.localPosition = currentWeaponConfig.grip.localPosition;
 			weaponObject.transform.localRotation = currentWeaponConfig.grip.localRotation;
 		}
-		
+
+		public GameObject RequestDominantHand() {
+			DominantHand[] dominantHands = GetComponentsInChildren<DominantHand>();
+			int dominantHandsFound = dominantHands.Length;
+
+			Assert.AreNotEqual(dominantHandsFound, 0, "No dominant hand found on player. It is required.");
+			Assert.IsFalse(dominantHandsFound > 1, "PlayerControl should only have one dominant hand.");
+
+			return dominantHands[0].gameObject;
+		}
+
 		private void ScanForAbilityKeyDown() {
 			for (int keyIndex = 0; keyIndex < abilities.GetNumberOfAbilities(); keyIndex++) {
 				if (Input.GetKeyDown(keyIndex.ToString())) {
@@ -74,19 +84,10 @@ namespace RPG.Characters {
 			animatorOverrideController[DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimClip();
 		}
 
-		public GameObject RequestDominantHand() {
-			DominantHand[] dominantHands = GetComponentsInChildren<DominantHand>();
-			int dominantHandsFound = dominantHands.Length;
-
-			Assert.AreNotEqual(dominantHandsFound, 0, "No dominant hand found on player. It is required.");
-			Assert.IsFalse(dominantHandsFound > 1, "Player should only have one dominant hand.");
-
-			return dominantHands[0].gameObject;
-		}
-
-		private void RegisterForMouseClick() {
+		private void RegisterForMouseEvent() {
 			cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
 			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
+			cameraRaycaster.onMouseOverPossiblyWalkable += OnMouseOverPossiblyWalkable;
 		}
 
 		private void OnMouseOverEnemy(Enemy enemy) {
@@ -98,6 +99,12 @@ namespace RPG.Characters {
 				} else if (Input.GetMouseButtonDown(1)) {
 					abilities.AttemptSpecialAbility(0);
 				}
+			}
+		}
+
+		private void OnMouseOverPossiblyWalkable(Vector3 destination) {
+			if (Input.GetMouseButton(0)) {
+				character.SetDestination(destination);
 			}
 		}
 

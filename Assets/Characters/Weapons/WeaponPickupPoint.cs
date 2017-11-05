@@ -9,12 +9,12 @@ namespace RPG.Characters {
 		[SerializeField] private Weapons weaponConfig;
 		[SerializeField] private AudioClip pickupSoundEffect;
 
-		private Player player = null;
+		private PlayerControl _playerControl = null;
 		private AudioSource myAudioSource = null;
 		
 		void Start() {
 			myAudioSource = GetComponent<AudioSource>();
-			player = FindObjectOfType<Player>();
+			_playerControl = FindObjectOfType<PlayerControl>();
 		}
 		
 		void Update() {
@@ -37,7 +37,7 @@ namespace RPG.Characters {
 		}
 
 		private void OnTriggerEnter(Collider otherCollider) {
-			player.PutWeaponInHand(weaponConfig);
+			_playerControl.PutWeaponInHand(weaponConfig);
 			myAudioSource.PlayOneShot(pickupSoundEffect);
 		}
 	}

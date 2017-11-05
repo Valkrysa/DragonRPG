@@ -38,19 +38,14 @@ namespace RPG.Characters {
 		private Rigidbody myRigidbody;
 		private float turnAmount;
 		private float forwardAmount;
+		private bool isAlive = true;
 
 		private void Awake() {
 			AddRequiredComponents();
 		}
 
-		private void Start() {
-			CameraRaycaster cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-			cameraRaycaster.onMouseOverPossiblyWalkable += OnMouseOverPossiblyWalkable;
-			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
-		}
-
 		private void Update() {
-			if (navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance) {
+			if (isAlive && navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance) {
 				Move(navMeshAgent.desiredVelocity);
 			} else {
 				Move(Vector3.zero);
@@ -67,19 +62,17 @@ namespace RPG.Characters {
 		}
 
 		public void Kill() {
-			// TODO allow death signaling
+			isAlive = false;
 		}
 
-		private void OnMouseOverPossiblyWalkable(Vector3 destination) {
-			if (Input.GetMouseButton(0)) {
-				navMeshAgent.SetDestination(destination);
-			}
+		public void SetDestination(Vector3 worldPos) {
+			navMeshAgent.destination = worldPos;
 		}
 
-		private void OnMouseOverEnemy(Enemy enemy) {
-			if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(1)) {
-				navMeshAgent.SetDestination(enemy.transform.position);
-			}
+		private void Move(Vector3 movement) {
+			SetForwardAndTurn(movement);
+			ApplyExtraTurnRotation();
+			UpdateAnimator();
 		}
 
 		private void AddRequiredComponents() {
@@ -104,12 +97,6 @@ namespace RPG.Characters {
 			audioSource.spatialBlend = audioSourceSpatialBlend;
 		}
 
-		public void Move(Vector3 movement) {
-			SetForwardAndTurn(movement);
-			ApplyExtraTurnRotation();
-			UpdateAnimator();
-		}
-
 		private void SetForwardAndTurn(Vector3 movement) {
 			if (movement.magnitude > moveThreshold) {
 				movement.Normalize();
@@ -119,13 +106,13 @@ namespace RPG.Characters {
 			forwardAmount = localMovement.z;
 		}
 
-		void UpdateAnimator() {
+		private void UpdateAnimator() {
 			myAnimator.SetFloat("Forward", forwardAmount, 0.1f, Time.deltaTime);
 			myAnimator.SetFloat("Turn", turnAmount, 0.1f, Time.deltaTime);
 			myAnimator.speed = animationSpeedMultiplier;
 		}
 
-		void ApplyExtraTurnRotation() {
+		private void ApplyExtraTurnRotation() {
 			// help the character turn faster (this is in addition to root rotation in the animation)
 			float turnSpeed = Mathf.Lerp(stationaryTurnSpeed, movingTurnSpeed, forwardAmount);
 			transform.Rotate(0, turnAmount * turnSpeed * Time.deltaTime, 0);

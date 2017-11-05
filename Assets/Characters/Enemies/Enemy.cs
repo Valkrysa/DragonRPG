@@ -14,7 +14,7 @@ namespace RPG.Characters {
 		[SerializeField] private float shotTimeVariation = 0.1f;
 		[SerializeField] private Vector3 aimOffset = new Vector3(0f, 1f, 0f);
 		
-		private Player player = null;
+		private PlayerControl _playerControl = null;
 		private bool isAttacking = false;
 		private ChatReaction chatReaction = null;
 
@@ -23,17 +23,17 @@ namespace RPG.Characters {
 		}
 
 		private void Start() {
-			player = FindObjectOfType<Player>();
+			_playerControl = FindObjectOfType<PlayerControl>();
 			chatReaction = GetComponent<ChatReaction>();
 		}
 
 		private void Update() {
-			float distanceToTarget = Vector3.Distance(player.transform.position, transform.position);
+			float distanceToTarget = Vector3.Distance(_playerControl.transform.position, transform.position);
 
 			if (distanceToTarget <= attackRadius) {
 				//aICharacterControl.SetTarget(transform);
 			} else if (distanceToTarget <= chaseRadius) {
-				//aICharacterControl.SetTarget(player.transform);
+				//aICharacterControl.SetTarget(_playerControl.transform);
 			} else if (distanceToTarget > chaseRadius) {
 				//aICharacterControl.SetTarget(transform);
 			}
@@ -71,7 +71,7 @@ namespace RPG.Characters {
 			projectileComponent.SetShooter(gameObject);
 			projectileComponent.SetDamage(damagePerShot);
 
-			Vector3 targetDirection = (player.transform.position + aimOffset - projectileFired.transform.position).normalized;
+			Vector3 targetDirection = (_playerControl.transform.position + aimOffset - projectileFired.transform.position).normalized;
 			float projectileSpeed = projectileComponent.GetDefaultLaunchSpeed();
 			projectileFired.GetComponent<Rigidbody>().velocity = targetDirection * projectileSpeed;
 		}

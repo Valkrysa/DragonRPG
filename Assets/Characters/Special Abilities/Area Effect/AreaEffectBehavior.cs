@@ -22,7 +22,7 @@ namespace RPG.Characters {
 			);
 			foreach (var targetHit in targetsHit) {
 				HealthSystem hitDamageable = targetHit.collider.gameObject.GetComponent<HealthSystem>();
-				bool hitPlayer = targetHit.collider.gameObject.GetComponent<Player>();
+				bool hitPlayer = targetHit.collider.gameObject.GetComponent<PlayerControl>();
 				if (!hitPlayer && hitDamageable != null) {
 					hitDamageable.TakeDamage(damageToDeal);
 				}
