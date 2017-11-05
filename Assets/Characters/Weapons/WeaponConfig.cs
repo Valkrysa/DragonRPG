@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RPG.Characters {
 	[CreateAssetMenu(menuName = "RPG/Weapon")]
-	public class Weapons : ScriptableObject {
+	public class WeaponConfig : ScriptableObject {
 
 		public Transform grip;
 

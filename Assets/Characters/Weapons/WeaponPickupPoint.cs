@@ -6,16 +6,8 @@ using RPG.Characters;
 namespace RPG.Characters {
 	[ExecuteInEditMode]
 	public class WeaponPickupPoint : MonoBehaviour {
-		[SerializeField] private Weapons weaponConfig;
+		[SerializeField] private WeaponConfig weaponConfigConfig;
 		[SerializeField] private AudioClip pickupSoundEffect;
-
-		private PlayerControl _playerControl = null;
-		private AudioSource myAudioSource = null;
-		
-		void Start() {
-			myAudioSource = GetComponent<AudioSource>();
-			_playerControl = FindObjectOfType<PlayerControl>();
-		}
 		
 		void Update() {
 			if (!Application.isPlaying) {
@@ -25,7 +17,7 @@ namespace RPG.Characters {
 		}
 
 		private void InstantiateWeapon() {
-			var weapon = weaponConfig.GetWeaponPrefab();
+			var weapon = weaponConfigConfig.GetWeaponPrefab();
 			weapon.transform.position = Vector3.zero;
 			Instantiate(weapon, gameObject.transform);
 		}
@@ -37,8 +29,8 @@ namespace RPG.Characters {
 		}
 
 		private void OnTriggerEnter(Collider otherCollider) {
-			_playerControl.PutWeaponInHand(weaponConfig);
-			myAudioSource.PlayOneShot(pickupSoundEffect);
+			GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponSystem>().PutWeaponInHand(weaponConfigConfig);
+			GetComponent<AudioSource>().PlayOneShot(pickupSoundEffect);
 		}
 	}
 }

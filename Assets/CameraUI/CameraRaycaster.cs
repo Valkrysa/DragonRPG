@@ -15,7 +15,7 @@ namespace RPG.CameraUI {
 		public delegate void OnMouseOverTerrain(Vector3 destination);
 		public event OnMouseOverTerrain onMouseOverPossiblyWalkable;
 
-		public delegate void OnMouseOverEnemy(Enemy enemy);
+		public delegate void OnMouseOverEnemy(EnemyAI enemyAi);
 		public event OnMouseOverEnemy onMouseOverEnemy;
 
 		void Update() {
@@ -57,10 +57,10 @@ namespace RPG.CameraUI {
 
 			if (raycastHit) {
 				GameObject gameObjectHit = hitInfo.collider.gameObject;
-				Enemy enemyHit = gameObjectHit.GetComponent<Enemy>();
-				if (enemyHit) {
+				EnemyAI enemyAiHit = gameObjectHit.GetComponent<EnemyAI>();
+				if (enemyAiHit) {
 					Cursor.SetCursor(attackCursor, cursorHotspot, CursorMode.Auto);
-					onMouseOverEnemy(enemyHit);
+					onMouseOverEnemy(enemyAiHit);
 					return true;
 				}
 			}
