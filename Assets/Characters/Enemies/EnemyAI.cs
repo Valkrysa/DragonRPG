@@ -4,31 +4,68 @@ using UnityEngine;
 using RPG.Core;
 
 namespace RPG.Characters {
+	[RequireComponent(typeof(HealthSystem))]
+	[RequireComponent(typeof(Character))]
 	[RequireComponent(typeof(WeaponSystem))]
 	public class EnemyAI : MonoBehaviour {
-		[SerializeField] private float chaseRadius = 10f;
+		private enum State {
+			idle, patrolling, chasing, attacking, fleeing, following
+		}
 
+		[SerializeField] private WaypointContainer patrolPath;
+		[SerializeField] private float waypointPauseTime = 0.5f;
+		[SerializeField] private float waypointTolerance = 4;
+		[SerializeField] private float chaseRadius = 2f;
+		[SerializeField] private bool isFriendly = false;
+
+		private State state = State.idle;
+		private HealthSystem health;
 		private ChatReaction chatReaction = null;
 		private PlayerControl playerControl;
-		private bool isAttacking = false;
+		private Character character;
 		private float attackRange;
+		private float distanceToTarget;
+		private int nextWaypointIndex = 0;
 
 		private void Start() {
-			playerControl = FindObjectOfType<PlayerControl>();
+			health = GetComponent<HealthSystem>();
 			chatReaction = GetComponent<ChatReaction>();
+			character = GetComponent<Character>();
+
+			playerControl = FindObjectOfType<PlayerControl>();
 		}
 
 		private void Update() {
 			WeaponSystem weaponSystem = GetComponent<WeaponSystem>();
 			attackRange = weaponSystem.GetCurrentWeapon().GetMaxAttackRange();
 
-			float distanceToTarget = Vector3.Distance(playerControl.transform.position, transform.position);
+			distanceToTarget = Vector3.Distance(playerControl.transform.position, transform.position);
 
-			/*
-			if (chatReaction) {
-				chatReaction.React();
+			if (distanceToTarget > chaseRadius && state != State.patrolling) {
+				StopAllCoroutines();
+				weaponSystem.StopAttacking();
+				StartCoroutine(Patrol());
 			}
-			*/
+			if (distanceToTarget > attackRange && distanceToTarget <= chaseRadius && state != State.chasing) {
+				StopAllCoroutines();
+				weaponSystem.StopAttacking();
+				StartCoroutine(ChasePlayer());
+			}
+			if (distanceToTarget <= attackRange && state != State.attacking) {
+				StopAllCoroutines();
+				state = State.attacking;
+				weaponSystem.AttackTarget(playerControl.gameObject);
+
+				if (chatReaction) {
+					chatReaction.React();
+				}
+			}
+			if (isFriendly && distanceToTarget <= chaseRadius && state != State.following) {
+				// follow state // following is moving to a spot right behind the player
+			}
+			if (health.HealthAsPercentage() <= .05 && state != State.fleeing) {
+				// flee state
+			}
 		}
 
 		private void OnDrawGizmos() {
@@ -39,6 +76,34 @@ namespace RPG.Characters {
 			// draw move sphere
 			Gizmos.color = Color.blue;
 			Gizmos.DrawWireSphere(transform.position, chaseRadius);
+		}
+
+		private IEnumerator Patrol() {
+			state = State.patrolling;
+
+			while (patrolPath != null) {
+				Vector3 nextWaypointPos = patrolPath.transform.GetChild(nextWaypointIndex).position;
+				character.SetDestination(nextWaypointPos);
+				CycleWaypointWhenClose(nextWaypointPos);
+
+				yield return new WaitForSeconds(waypointPauseTime);
+			}	
+		}
+
+		private IEnumerator ChasePlayer() {
+			state = State.chasing;
+
+			while (distanceToTarget >= attackRange) {
+				character.SetDestination(playerControl.transform.position);
+				yield return new WaitForEndOfFrame();
+			}
+		}
+
+		private void CycleWaypointWhenClose(Vector3 currentWaypointPosition) {
+			if (Vector3.Distance(transform.position, currentWaypointPosition) <= waypointTolerance) {
+				// I orginally had a if check, but teachers use of modulo is better.
+				nextWaypointIndex = (nextWaypointIndex + 1) % patrolPath.transform.childCount;
+			}
 		}
 	}
 }

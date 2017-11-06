@@ -29,7 +29,8 @@ namespace RPG.Characters {
 		}
 
 		private void OnTriggerEnter(Collider otherCollider) {
-			GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponSystem>().PutWeaponInHand(weaponConfigConfig);
+			//GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponSystem>().PutWeaponInHand(weaponConfigConfig);
+			FindObjectOfType<PlayerControl>().GetComponent<WeaponSystem>().PutWeaponInHand(weaponConfigConfig);
 			GetComponent<AudioSource>().PlayOneShot(pickupSoundEffect);
 		}
 	}

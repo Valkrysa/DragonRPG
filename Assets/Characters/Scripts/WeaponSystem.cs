@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -15,8 +14,7 @@ namespace RPG.Characters {
 		private float lastHitTime;
 		private const string ATTACK_TRIGGER = "Attack";
 		private const string DEFAULT_ATTACK = "DEFAULT ATTACK";
-
-		// Use this for initialization
+		
 		void Start() {
 			character = GetComponent<Character>();
 			animator = GetComponent<Animator>();
@@ -24,10 +22,24 @@ namespace RPG.Characters {
 			PutWeaponInHand(currentWeaponConfig);
 			SetAttackAnimation();
 		}
-
-		// Update is called once per frame
+		
 		void Update() {
+			bool targetIsDead;
+			bool targetOutOfRange;
 
+			if (target == null) {
+				targetIsDead = false;
+				targetOutOfRange = false;
+			} else {
+				targetIsDead = target.GetComponent<HealthSystem>().HealthAsPercentage() <= Mathf.Epsilon;
+				targetOutOfRange = currentWeaponConfig.GetMaxAttackRange() < Vector3.Distance(transform.position, target.transform.position);
+			}
+
+			bool characterIsDead = GetComponent<HealthSystem>().HealthAsPercentage() <= Mathf.Epsilon;
+			
+			if (characterIsDead || targetIsDead || targetOutOfRange) {
+				StopAllCoroutines();
+			}
 		}
 
 		public void PutWeaponInHand(WeaponConfig weaponConfig) {
@@ -53,30 +65,64 @@ namespace RPG.Characters {
 			return dominantHands[0].gameObject;
 		}
 
-		public void AttackTarget(GameObject targetToAttack) {
-			target = targetToAttack;
-			// repeat attack co-routine
-			Debug.Log("Attacking " + targetToAttack.name + "!");
-		}
-
 		public WeaponConfig GetCurrentWeapon() {
 			return currentWeaponConfig;
 		}
 
-		private void ExecuteAttack() {
-			Component damageable = target.GetComponent(typeof(HealthSystem));
-			if (damageable && (Time.time - lastHitTime > currentWeaponConfig.GetMinTimeBetweenHits())) {
-				SetAttackAnimation();
-				animator.SetTrigger(ATTACK_TRIGGER);
-				(damageable as HealthSystem).TakeDamage(CalculateDamage());
-				lastHitTime = Time.time;
+		public void StopAttacking() {
+			StopAllCoroutines();
+		}
+
+		public void AttackTarget(GameObject targetToAttack) {
+			target = targetToAttack;
+			StartCoroutine(AttackTargetRepeatedly());
+		}
+
+		private IEnumerator AttackTargetRepeatedly() {
+			bool attackerStillAlive = GetComponent<HealthSystem>().HealthAsPercentage() >= Mathf.Epsilon;
+			bool targetStillAlive = target.GetComponent<HealthSystem>().HealthAsPercentage() >= Mathf.Epsilon;
+
+			while (attackerStillAlive && targetStillAlive) {
+				float attackTime = currentWeaponConfig.GetMinTimeBetweenHits();
+				attackTime = attackTime * character.GetAnimationSpeedMultiplier();
+
+				bool timeToAttack = (Time.time - lastHitTime) > attackTime;
+
+				if (timeToAttack) {
+					lastHitTime = Time.time;
+
+					AttackTargetOnce();
+				}
+
+				yield return new WaitForSeconds(attackTime);
+			}
+		}
+
+		private void AttackTargetOnce() {
+			transform.LookAt(target.transform);
+			float damageTiming = currentWeaponConfig.GetDamageDelay();
+			SetAttackAnimation();
+			animator.SetTrigger(ATTACK_TRIGGER);
+			StartCoroutine(DamageAfterDelay(damageTiming));
+
+		}
+
+		private IEnumerator DamageAfterDelay(float delay) {
+			yield return new WaitForSeconds(delay);
+			if (target != null) {
+				target.GetComponent<HealthSystem>().TakeDamage(CalculateDamage());
 			}
 		}
 
 		private void SetAttackAnimation() {
-			AnimatorOverrideController animatorOverrideController = character.GetAnimatorOverrideController();
-			animator.runtimeAnimatorController = animatorOverrideController;
-			animatorOverrideController[DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimClip();
+			if (!character.GetAnimatorOverrideController()) {
+				Debug.Break();
+				Debug.LogAssertion("Please provide animator override controller");
+			} else {
+				AnimatorOverrideController animatorOverrideController = character.GetAnimatorOverrideController();
+				animator.runtimeAnimatorController = animatorOverrideController;
+				animatorOverrideController[DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimClip();
+			}
 		}
 
 		private float CalculateDamage() {

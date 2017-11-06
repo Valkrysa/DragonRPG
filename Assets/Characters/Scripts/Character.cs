@@ -20,6 +20,7 @@ namespace RPG.Characters {
 		[SerializeField] private Vector3 colliderCenter;
 		[SerializeField] private float colliderRadius;
 		[SerializeField] private float colliderHeight;
+		[SerializeField] private PhysicMaterial physicMaterial;
 
 		[Header("Movement")]
 		[SerializeField] private float moveSpeedMultiplier = 1.5f;
@@ -73,6 +74,10 @@ namespace RPG.Characters {
 			return animatorOverrideController;
 		}
 
+		public float GetAnimationSpeedMultiplier() {
+			return animationSpeedMultiplier;
+		}
+
 		private void Move(Vector3 movement) {
 			SetForwardAndTurn(movement);
 			ApplyExtraTurnRotation();
@@ -88,6 +93,7 @@ namespace RPG.Characters {
 			collider.center = colliderCenter;
 			collider.radius = colliderRadius;
 			collider.height = colliderHeight;
+			collider.material = physicMaterial;
 
 			myRigidbody = gameObject.AddComponent<Rigidbody>();
 
@@ -96,6 +102,8 @@ namespace RPG.Characters {
 			navMeshAgent.updateRotation = false;
 			navMeshAgent.autoBraking = false;
 			navMeshAgent.stoppingDistance = navMeshAgentStoppingDistance;
+			navMeshAgent.baseOffset = -0.11f; // TODO check up on this test
+			// navMeshAgent.height = 2.03f;
 
 			var audioSource = gameObject.AddComponent<AudioSource>();
 			audioSource.spatialBlend = audioSourceSpatialBlend;
