@@ -9,7 +9,7 @@ namespace RPG.Characters {
 	[RequireComponent(typeof(WeaponSystem))]
 	public class EnemyAI : MonoBehaviour {
 		private enum State {
-			idle, patrolling, chasing, attacking, fleeing, following
+			idle, patrolling, chasing, attacking, fleeing, following, greeting
 		}
 
 		[SerializeField] private WaypointContainer patrolPath;
@@ -26,6 +26,7 @@ namespace RPG.Characters {
 		private float attackRange;
 		private float distanceToTarget;
 		private int nextWaypointIndex = 0;
+		private bool hasGreeted = false;
 
 		private void Start() {
 			health = GetComponent<HealthSystem>();
@@ -41,17 +42,30 @@ namespace RPG.Characters {
 
 			distanceToTarget = Vector3.Distance(playerControl.transform.position, transform.position);
 
-			if (distanceToTarget > chaseRadius && state != State.patrolling) {
+			bool inWeaponRange = distanceToTarget <= attackRange;
+			bool inChaseRange = distanceToTarget > attackRange && distanceToTarget <= chaseRadius;
+			bool outsideChaseRange = distanceToTarget > chaseRadius;
+
+			if (isFriendly) {
+				if (inChaseRange && !hasGreeted) {
+					hasGreeted = true;
+					if (chatReaction) {
+						chatReaction.React();
+					}
+				}
+			}
+
+			if (outsideChaseRange && state != State.patrolling) {
 				StopAllCoroutines();
 				weaponSystem.StopAttacking();
 				StartCoroutine(Patrol());
 			}
-			if (distanceToTarget > attackRange && distanceToTarget <= chaseRadius && state != State.chasing) {
+			if (inChaseRange && state != State.chasing) {
 				StopAllCoroutines();
 				weaponSystem.StopAttacking();
 				StartCoroutine(ChasePlayer());
 			}
-			if (distanceToTarget <= attackRange && state != State.attacking) {
+			if (inWeaponRange && state != State.attacking) {
 				StopAllCoroutines();
 				state = State.attacking;
 				weaponSystem.AttackTarget(playerControl.gameObject);

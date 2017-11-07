@@ -60,17 +60,23 @@ namespace RPG.Characters {
 		}
 
 		private void PlayRandomDamageSound() {
-			int randomIndex = UnityEngine.Random.Range(0, damageSounds.Length);
-			AudioClip clip = damageSounds[randomIndex];
-			audioSource.PlayOneShot(clip);
+			if (damageSounds.Length > 0) {
+				int randomIndex = UnityEngine.Random.Range(0, damageSounds.Length);
+				AudioClip clip = damageSounds[randomIndex];
+				audioSource.PlayOneShot(clip);
+			}
 		}
 
 		private float PlayRandomDeathSound() {
-			int randomIndex = UnityEngine.Random.Range(0, deathSounds.Length);
-			AudioClip clip = deathSounds[randomIndex];
-			audioSource.PlayOneShot(clip);
+			if (deathSounds.Length > 0) {
+				int randomIndex = UnityEngine.Random.Range(0, deathSounds.Length);
+				AudioClip clip = deathSounds[randomIndex];
+				audioSource.PlayOneShot(clip);
 
-			return deathSounds[randomIndex].length;
+				return deathSounds[randomIndex].length;
+			} else {
+				return 1f;
+			}
 		}
 
 		private IEnumerator KillCharacter() {

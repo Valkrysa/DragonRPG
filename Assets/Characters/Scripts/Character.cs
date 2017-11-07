@@ -12,6 +12,7 @@ namespace RPG.Characters {
 		private AnimatorController animatorController;
 		[SerializeField] private AnimatorOverrideController animatorOverrideController;
 		[SerializeField] private Avatar avatar;
+		[SerializeField] [Range(0.1f, 1f)] private float animatorForwardCap = 1f;
 
 		[Header("Audio Source")]
 		[SerializeField] private float audioSourceSpatialBlend = 0.5f;
@@ -93,7 +94,7 @@ namespace RPG.Characters {
 			collider.center = colliderCenter;
 			collider.radius = colliderRadius;
 			collider.height = colliderHeight;
-			collider.material = physicMaterial;
+			// collider.material = physicMaterial;
 
 			myRigidbody = gameObject.AddComponent<Rigidbody>();
 
@@ -102,7 +103,7 @@ namespace RPG.Characters {
 			navMeshAgent.updateRotation = false;
 			navMeshAgent.autoBraking = false;
 			navMeshAgent.stoppingDistance = navMeshAgentStoppingDistance;
-			navMeshAgent.baseOffset = -0.11f; // TODO check up on this test
+			// navMeshAgent.baseOffset = -0.11f; // TODO check up on this test
 			// navMeshAgent.height = 2.03f;
 
 			var audioSource = gameObject.AddComponent<AudioSource>();
@@ -119,7 +120,7 @@ namespace RPG.Characters {
 		}
 
 		private void UpdateAnimator() {
-			myAnimator.SetFloat("Forward", forwardAmount, 0.1f, Time.deltaTime);
+			myAnimator.SetFloat("Forward", forwardAmount * animatorForwardCap, 0.1f, Time.deltaTime);
 			myAnimator.SetFloat("Turn", turnAmount, 0.1f, Time.deltaTime);
 			myAnimator.speed = animationSpeedMultiplier;
 		}

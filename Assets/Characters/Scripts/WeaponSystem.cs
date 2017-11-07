@@ -70,6 +70,7 @@ namespace RPG.Characters {
 		}
 
 		public void StopAttacking() {
+			animator.StopPlayback();
 			StopAllCoroutines();
 		}
 

@@ -1971,9 +1971,10 @@ MonoBehaviour:
   animatorOverrideController: {fileID: 22100000, guid: ef324c497e1d04f439008a954c954f39,
     type: 2}
   avatar: {fileID: 9000000, guid: d288a0e4a2d923b46898986e979da643, type: 3}
+  animatorForwardCap: 1
   audioSourceSpatialBlend: 0.5
   colliderCenter: {x: 0, y: 0.8, z: 0}
-  colliderRadius: 0.2
+  colliderRadius: 1
   colliderHeight: 1.6
   physicMaterial: {fileID: 0}
   moveSpeedMultiplier: 1.5
@@ -2037,19 +2038,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e956d414d944a41827c5922bf03c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageSounds:
-  - {fileID: 8300000, guid: 512d9a48e0979f24cb41006c7953ddac, type: 3}
-  - {fileID: 8300000, guid: 23fe4eada54b9ce46aed8be668f4c8ba, type: 3}
-  - {fileID: 8300000, guid: a914db1cfa3e8cd4b80e00363d5616ac, type: 3}
-  - {fileID: 8300000, guid: 80f336f5cdd5a364cbf572c805e364e4, type: 3}
-  - {fileID: 8300000, guid: 6bf0d538180ba0e4590d8c8285a6a285, type: 3}
-  - {fileID: 8300000, guid: d2bbeeb985e637143b6d0e617759b9f1, type: 3}
-  deathSounds:
-  - {fileID: 8300000, guid: d39e219d3b4c34d408ff82434fefcbf1, type: 3}
-  - {fileID: 8300000, guid: 2675da37420ef4c498cd83ff01b0be6c, type: 3}
-  - {fileID: 8300000, guid: d18546ba22dacb342b324c4d9f15cc96, type: 3}
+  damageSounds: []
+  deathSounds: []
   healthBar: {fileID: 114733439052803226}
-  maxHealthPoints: 100
+  maxHealthPoints: 84
   deathVanishSeconds: 2
 --- !u!114 &114733439052803226
 MonoBehaviour:
@@ -2089,7 +2081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07138d158ef71aa43b1ac6628ffc2d4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDamage: 25
+  baseDamage: 22
   currentWeaponConfig: {fileID: 11400000, guid: 40211291d1d810741b58d2fce03041dc,
     type: 2}
 --- !u!137 &137891173398240518
@@ -2105,7 +2097,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ccae2dc6cf6f0c4479b782fedd0c8172, type: 2}
+  - {fileID: 2100000, guid: 32d4ff406718df84aa7dce129fc2f819, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

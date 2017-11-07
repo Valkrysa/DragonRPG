@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a62a4dfe293133d4d89b2c18a2acc007, type: 3}
-  m_Name: Sword
+  m_Name: Sword_LV1
   m_EditorClassIdentifier: 
   grip: {fileID: 4550014861074844, guid: e07f6c0a4b28d674895784b52d2d448a, type: 2}
   weaponPrefab: {fileID: 1277290872445230, guid: 0982ce6c23f616d4bae4c222799510a6,
@@ -17,4 +17,5 @@ MonoBehaviour:
   attackAnimation: {fileID: 7400000, guid: 65ab56ec63abae340b7646d2ed24c864, type: 3}
   minTimeBetweenHits: 1.5
   maxAttackRange: 3
-  additionalDamage: 10
+  additionalDamage: 30
+  damageDelay: 0.5
