@@ -249,6 +249,7 @@ GameObject:
   - component: {fileID: 114727906138027780}
   - component: {fileID: 114925488603014522}
   - component: {fileID: 114509178646336564}
+  - component: {fileID: 114549830942756116}
   m_Layer: 2
   m_Name: Priest
   m_TagString: Untagged
@@ -1844,7 +1845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5accb87177ba33b4c881069353bab736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reaction: 'Enemy: Enemy Reaction!'
+  reaction: 'Priest: I am friendly.'
 --- !u!114 &114509178646336564
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1889,6 +1890,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114549830942756116
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1272417609329804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3032cf70583f55a48b31900cf8b2ac07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: f3fe9f6269b7be448a5a95be6497f777, type: 3}
+  distanceToPlayerTriggerRadius: 3
+  isOneTimeOnly: 1
 --- !u!114 &114573946701458512
 MonoBehaviour:
   m_ObjectHideFlags: 1

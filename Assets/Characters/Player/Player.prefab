@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 114053132175185322}
   - component: {fileID: 114260232572810650}
   - component: {fileID: 114898758212433872}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -878,7 +878,7 @@ GameObject:
   - component: {fileID: 4285652115529284}
   - component: {fileID: 198966304364708140}
   - component: {fileID: 199254847047417068}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Critical Hit Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1463,7 +1463,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1337287940806458}
   m_LocalRotation: {x: -0, y: -0.98282105, z: -0, w: -0.18456116}
-  m_LocalPosition: {x: 21.599808, y: 0, z: 61.02281}
+  m_LocalPosition: {x: 18.98, y: 0, z: 58.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4426925571372096}
@@ -1920,7 +1920,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2675da37420ef4c498cd83ff01b0be6c, type: 3}
   - {fileID: 8300000, guid: d18546ba22dacb342b324c4d9f15cc96, type: 3}
   healthBar: {fileID: 0}
-  maxHealthPoints: 100
+  maxHealthPoints: 360
   deathVanishSeconds: 2
 --- !u!114 &114384582725941478
 MonoBehaviour:
@@ -1937,6 +1937,7 @@ MonoBehaviour:
   animatorOverrideController: {fileID: 22100000, guid: c66dedf8f1ad19d43823328c9e736bb8,
     type: 2}
   avatar: {fileID: 9000000, guid: d288a0e4a2d923b46898986e979da643, type: 3}
+  animatorForwardCap: 1
   audioSourceSpatialBlend: 0.5
   colliderCenter: {x: 0, y: 1, z: 0}
   colliderRadius: 0.2
@@ -1982,7 +1983,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07138d158ef71aa43b1ac6628ffc2d4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDamage: 25
+  baseDamage: 30
   currentWeaponConfig: {fileID: 11400000, guid: eac058f5eacb31b4ba357c6f27414263,
     type: 2}
 --- !u!137 &137635018826825506

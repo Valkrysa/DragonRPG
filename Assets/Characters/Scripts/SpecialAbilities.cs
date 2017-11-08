@@ -50,7 +50,9 @@ public class SpecialAbilities : MonoBehaviour {
 	}
 
 	private void UpdateEnergyBar() {
-		energyBar.fillAmount = EnergyAsPercentage();
+		if (energyBar != null) {
+			energyBar.fillAmount = EnergyAsPercentage();
+		}
 	}
 
 	private float EnergyAsPercentage() {

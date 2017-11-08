@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
-using RPG.CameraUI;
 using UnityEditor.Animations;
 
 namespace RPG.Characters {
@@ -47,6 +45,10 @@ namespace RPG.Characters {
 		}
 
 		private void Update() {
+			if (!navMeshAgent.isOnNavMesh) {
+				Debug.LogError(gameObject.name + " is not properly placed onto the nav mesh");
+			}
+
 			if (isAlive && navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance) {
 				Move(navMeshAgent.desiredVelocity);
 			} else {

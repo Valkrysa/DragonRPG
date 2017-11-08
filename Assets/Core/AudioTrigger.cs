@@ -1,31 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RPG.Characters;
 
 namespace RPG.Core {
 	public class AudioTrigger : MonoBehaviour {
 
 		[SerializeField] AudioClip clip;
-		[SerializeField] int layerFilter = 0;
-		[SerializeField] float triggerRadius = 5f;
+		[SerializeField] float distanceToPlayerTriggerRadius = 5f;
 		[SerializeField] bool isOneTimeOnly = true;
 
-		[SerializeField] bool hasPlayed = false;
-		AudioSource audioSource;
+		private ChatReaction chatReaction;
+		private AudioSource audioSource;
+		private GameObject player;
+		private bool hasPlayed = false;
 
 		void Start() {
+			chatReaction = GetComponent<ChatReaction>();
 			audioSource = gameObject.AddComponent<AudioSource>();
 			audioSource.playOnAwake = false;
 			audioSource.clip = clip;
 
-			SphereCollider sphereCollider = gameObject.AddComponent<SphereCollider>();
-			sphereCollider.isTrigger = true;
-			sphereCollider.radius = triggerRadius;
-			gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+			player = FindObjectOfType<PlayerControl>().gameObject;
 		}
 
-		void OnTriggerEnter(Collider other) {
-			if (other.gameObject.layer == layerFilter) {
+		private void Update() {
+			float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+			if (distanceToPlayer <= distanceToPlayerTriggerRadius) {
 				RequestPlayAudioClip();
 			}
 		}
@@ -36,12 +37,16 @@ namespace RPG.Core {
 			} else if (audioSource.isPlaying == false) {
 				audioSource.Play();
 				hasPlayed = true;
+
+				if (chatReaction) {
+					chatReaction.React();
+				}
 			}
 		}
 
 		void OnDrawGizmos() {
 			Gizmos.color = new Color(0, 255f, 0, .5f);
-			Gizmos.DrawWireSphere(transform.position, triggerRadius);
+			Gizmos.DrawWireSphere(transform.position, distanceToPlayerTriggerRadius);
 		}
 	}
 }

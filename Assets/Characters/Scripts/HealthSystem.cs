@@ -83,12 +83,12 @@ namespace RPG.Characters {
 			_character.Kill();
 			animator.SetTrigger(DEATH_TRIGGER);
 
+			float deathLength = PlayRandomDeathSound();
+			yield return new WaitForSecondsRealtime(deathLength);
+
 			// if we are dealing with a _playerControl
 			PlayerControl playerControlComponent = GetComponent<PlayerControl>();
 			if (playerControlComponent && playerControlComponent.isActiveAndEnabled) {
-				float deathLength = PlayRandomDeathSound();
-				yield return new WaitForSecondsRealtime(deathLength);
-
 				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 			} else { // assume enemy
 				DestroyObject(gameObject, deathVanishSeconds);

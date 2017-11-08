@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 114727906138027780}
   - component: {fileID: 114925488603014522}
   - component: {fileID: 114509178646336564}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Minion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -912,7 +912,7 @@ GameObject:
   - component: {fileID: 224466678080532816}
   - component: {fileID: 222450722759230396}
   - component: {fileID: 114733439052803226}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Health Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

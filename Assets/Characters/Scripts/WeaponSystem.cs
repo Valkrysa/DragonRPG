@@ -84,8 +84,9 @@ namespace RPG.Characters {
 			bool targetStillAlive = target.GetComponent<HealthSystem>().HealthAsPercentage() >= Mathf.Epsilon;
 
 			while (attackerStillAlive && targetStillAlive) {
-				float attackTime = currentWeaponConfig.GetMinTimeBetweenHits();
-				attackTime = attackTime * character.GetAnimationSpeedMultiplier();
+				AnimationClip animationClip = currentWeaponConfig.GetAttackAnimClip();
+				float animationClipTime = animationClip.length / character.GetAnimationSpeedMultiplier();
+				float attackTime = animationClipTime + currentWeaponConfig.GetWaitTimeBetweenAnimations();
 
 				bool timeToAttack = (Time.time - lastHitTime) > attackTime;
 

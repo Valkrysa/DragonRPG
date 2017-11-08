@@ -9,7 +9,7 @@ namespace RPG.Characters {
 	[RequireComponent(typeof(WeaponSystem))]
 	public class EnemyAI : MonoBehaviour {
 		private enum State {
-			idle, patrolling, chasing, attacking, fleeing, following, greeting
+			idle, patrolling, chasing, attacking, fleeing, following
 		}
 
 		[SerializeField] private WaypointContainer patrolPath;
@@ -20,7 +20,6 @@ namespace RPG.Characters {
 
 		private State state = State.idle;
 		private HealthSystem health;
-		private ChatReaction chatReaction = null;
 		private PlayerControl playerControl;
 		private Character character;
 		private float attackRange;
@@ -30,7 +29,6 @@ namespace RPG.Characters {
 
 		private void Start() {
 			health = GetComponent<HealthSystem>();
-			chatReaction = GetComponent<ChatReaction>();
 			character = GetComponent<Character>();
 
 			playerControl = FindObjectOfType<PlayerControl>();
@@ -46,15 +44,6 @@ namespace RPG.Characters {
 			bool inChaseRange = distanceToTarget > attackRange && distanceToTarget <= chaseRadius;
 			bool outsideChaseRange = distanceToTarget > chaseRadius;
 
-			if (isFriendly) {
-				if (inChaseRange && !hasGreeted) {
-					hasGreeted = true;
-					if (chatReaction) {
-						chatReaction.React();
-					}
-				}
-			}
-
 			if (outsideChaseRange && state != State.patrolling) {
 				StopAllCoroutines();
 				weaponSystem.StopAttacking();
@@ -69,10 +58,6 @@ namespace RPG.Characters {
 				StopAllCoroutines();
 				state = State.attacking;
 				weaponSystem.AttackTarget(playerControl.gameObject);
-
-				if (chatReaction) {
-					chatReaction.React();
-				}
 			}
 			if (isFriendly && distanceToTarget <= chaseRadius && state != State.following) {
 				// follow state // following is moving to a spot right behind the player

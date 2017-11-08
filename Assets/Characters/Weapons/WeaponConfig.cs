@@ -10,7 +10,7 @@ namespace RPG.Characters {
 
 		[SerializeField] private GameObject weaponPrefab;
 		[SerializeField] private AnimationClip attackAnimation;
-		[SerializeField] private float minTimeBetweenHits = 0.5f;
+		[SerializeField] private float waitTimeBetweenAnimations = 0.5f;
 		[SerializeField] private float maxAttackRange = 2f;
 		[SerializeField] private float additionalDamage = 10f;
 		[SerializeField] private float damageDelay = 0.5f;
@@ -28,8 +28,8 @@ namespace RPG.Characters {
 			attackAnimation.events = new AnimationEvent[0];
 		}
 
-		public float GetMinTimeBetweenHits() {
-			return minTimeBetweenHits;
+		public float GetWaitTimeBetweenAnimations() {
+			return waitTimeBetweenAnimations;
 		}
 
 		public float GetDamageDelay() {
