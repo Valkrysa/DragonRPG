@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: 114727906138027780}
   - component: {fileID: 114925488603014522}
   - component: {fileID: 114509178646336564}
+  - component: {fileID: 114796337963703418}
   m_Layer: 0
   m_Name: Archer
   m_TagString: Untagged
@@ -940,7 +941,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1272417609329804}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.98, y: 0, z: 34.25}
+  m_LocalPosition: {x: 59.632294, y: 0, z: 105.007965}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4872348398013626}
@@ -1973,15 +1974,14 @@ MonoBehaviour:
   avatar: {fileID: 9000000, guid: d288a0e4a2d923b46898986e979da643, type: 3}
   animatorForwardCap: 1
   audioSourceSpatialBlend: 0.5
-  colliderCenter: {x: 0, y: 0.8, z: 0}
-  colliderRadius: 1
-  colliderHeight: 1.6
-  physicMaterial: {fileID: 0}
-  moveSpeedMultiplier: 1.5
-  animationSpeedMultiplier: 1.5
+  colliderCenter: {x: 0, y: 1.03, z: 0}
+  colliderRadius: 0.2
+  colliderHeight: 1.02
+  moveSpeedMultiplier: 1.2
+  animationSpeedMultiplier: 1.2
   moveThreshold: 1
-  movingTurnSpeed: 360
-  stationaryTurnSpeed: 180
+  movingTurnSpeed: 1000
+  stationaryTurnSpeed: 800
   navMeshAgentSteeringSpeed: 1
   navMeshAgentStoppingDistance: 1.3
 --- !u!114 &114534022523448100
@@ -2038,8 +2038,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e956d414d944a41827c5922bf03c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageSounds: []
-  deathSounds: []
+  damageSounds:
+  - {fileID: 8300000, guid: 0ecf18972377e4652ab7377a0993f14a, type: 3}
+  - {fileID: 8300000, guid: 07c38e0499aea4acd81b44991c0e4d07, type: 3}
+  - {fileID: 8300000, guid: ebcbb664018f947728cb9b67468b0f48, type: 3}
+  - {fileID: 8300000, guid: f3645d7388d9f4efc88a56c59b3a70d4, type: 3}
+  - {fileID: 8300000, guid: 4ae4fe17d19c04e10920bfaca3bd8290, type: 3}
+  - {fileID: 8300000, guid: 44b3696bd5132401cafdca8526812f63, type: 3}
+  - {fileID: 8300000, guid: 72de2a353cacc46d3aad1d65f2599d2a, type: 3}
+  deathSounds:
+  - {fileID: 8300000, guid: 512d9a48e0979f24cb41006c7953ddac, type: 3}
+  - {fileID: 8300000, guid: 23fe4eada54b9ce46aed8be668f4c8ba, type: 3}
+  - {fileID: 8300000, guid: a914db1cfa3e8cd4b80e00363d5616ac, type: 3}
+  - {fileID: 8300000, guid: 80f336f5cdd5a364cbf572c805e364e4, type: 3}
+  - {fileID: 8300000, guid: 6bf0d538180ba0e4590d8c8285a6a285, type: 3}
+  - {fileID: 8300000, guid: d2bbeeb985e637143b6d0e617759b9f1, type: 3}
   healthBar: {fileID: 114733439052803226}
   maxHealthPoints: 84
   deathVanishSeconds: 2
@@ -2070,6 +2083,20 @@ MonoBehaviour:
   m_FillAmount: 0.3
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114796337963703418
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1272417609329804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3032cf70583f55a48b31900cf8b2ac07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: 3ca121c001790493aac9f6aec90cfc06, type: 3}
+  distanceToPlayerTriggerRadius: 6
+  isOneTimeOnly: 1
 --- !u!114 &114925488603014522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2082,7 +2109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseDamage: 22
-  currentWeaponConfig: {fileID: 11400000, guid: 40211291d1d810741b58d2fce03041dc,
+  currentWeaponConfig: {fileID: 11400000, guid: 8739581e73b22d64facec6947e097b99,
     type: 2}
 --- !u!137 &137891173398240518
 SkinnedMeshRenderer:

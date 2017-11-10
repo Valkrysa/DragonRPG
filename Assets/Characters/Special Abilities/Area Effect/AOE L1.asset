@@ -15,7 +15,6 @@ MonoBehaviour:
   particlePrefab: {fileID: 1176458649385332, guid: f2249426cea3e0843bf5cdbd7e10b12f,
     type: 2}
   audioClips:
-  - {fileID: 8300000, guid: 6d9e831f42377194bab6577f14ff5c9d, type: 3}
   - {fileID: 8300000, guid: 4a46782b6a4544fa089a35523f50e2a0, type: 3}
   abilityAnimation: {fileID: 7400000, guid: 76fd98d0cd26e454fa97be0e13933287, type: 3}
   effectRadius: 5
