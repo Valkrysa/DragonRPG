@@ -2079,7 +2079,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6bf0d538180ba0e4590d8c8285a6a285, type: 3}
   - {fileID: 8300000, guid: d2bbeeb985e637143b6d0e617759b9f1, type: 3}
   healthBar: {fileID: 114733439052803226}
-  maxHealthPoints: 48
+  maxHealthPoints: 20
   deathVanishSeconds: 2
 --- !u!114 &114733439052803226
 MonoBehaviour:

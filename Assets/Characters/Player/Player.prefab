@@ -1869,7 +1869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageSounds:
   - {fileID: 8300000, guid: 7c99d0bca0de24c2c9ceac25b8858715, type: 3}
-  - {fileID: 8300000, guid: 6a5fdcf04798543a48b8af37dfbd4bb6, type: 3}
+  - {fileID: 8300000, guid: 7c99d0bca0de24c2c9ceac25b8858715, type: 3}
   - {fileID: 8300000, guid: 42ca68b583e114d64961c618e4a6947d, type: 3}
   - {fileID: 8300000, guid: 77cae4c560d2b4c65b7dc1c0c2686a84, type: 3}
   - {fileID: 8300000, guid: 9b482a7bc21bb49c9a2000d3e7f61235, type: 3}
@@ -1896,7 +1896,7 @@ MonoBehaviour:
     type: 2}
   avatar: {fileID: 9000000, guid: e2958561779b1a748a4246b9d0c0b309, type: 3}
   animatorForwardCap: 1
-  audioSourceSpatialBlend: 0.5
+  audioSourceSpatialBlend: 0
   colliderCenter: {x: 0, y: 1.03, z: 0}
   colliderRadius: 0.2
   colliderHeight: 1.02

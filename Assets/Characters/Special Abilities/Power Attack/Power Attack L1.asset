@@ -18,4 +18,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 30795650ccec0f04fab5ef282c8c1b8f, type: 3}
   - {fileID: 8300000, guid: bc3f79aa976ad4b4db5b175e859e4592, type: 3}
   abilityAnimation: {fileID: 7400000, guid: dce280ced5e006c4cb0eb0fab2f51b75, type: 3}
-  abilityBonusDamage: 20
+  abilityBonusDamage: 50
